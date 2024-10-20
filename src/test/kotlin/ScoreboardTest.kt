@@ -34,10 +34,11 @@ internal class ScoreboardTest{
         val match: Match = getMatchInstance()
 
         scoreboard.addMatch(match)
-
-        assertEquals(1, scoreboard.matchList.size)
-        assertEquals ("Nanjing United", scoreboard.matchList[0].homeTeam.name)
-        assertEquals ("Karachi Palace", scoreboard.matchList[0].awayTeam.name)
+        val summary = scoreboard.getSummary()
+        assertNotNull(summary)
+        assertEquals(1, summary.size)
+        assertEquals ("Nanjing United", summary[0].homeTeam.name)
+        assertEquals ("Karachi Palace", summary[0].awayTeam.name)
 
     }
 

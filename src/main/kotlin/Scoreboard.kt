@@ -1,7 +1,5 @@
-import java.util.stream.Collectors
-
-class Scoreboard() {
-    var matchList: MutableList<Match> = mutableListOf()
+class Scoreboard {
+    private var matchList: MutableList<Match> = mutableListOf()
 
     fun getSummary(): List<Match>? {
         return matchList
