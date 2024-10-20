@@ -63,6 +63,18 @@ internal class ScoreboardTest{
         assertFalse(result)
     }
 
+    @Test
+    fun updateMatchByIndexForValidInputTest() {
+        val scoreboard: Scoreboard = getScoreboardInstance()
+        val match: Match = getMatchInstance()
+
+        scoreboard.addMatch(match)
+
+        assertTrue(scoreboard.updateMatch(match, 1, 0))
+        assertEquals(1, scoreboard.getSummary()[0].homeTeam.score)
+        assertEquals(0, scoreboard.getSummary()[0].awayTeam.score)
+    }
+
     private fun getScoreboardInstance() = Scoreboard()
     private fun getMatchInstance() = Match("Nanjing United", "Karachi Palace")
 }

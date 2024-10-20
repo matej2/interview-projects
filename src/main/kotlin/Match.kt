@@ -1,6 +1,6 @@
 import java.util.*
 
-class Match (val homeTeamName: String, val awayTeamName: String) {
+class Match (homeTeamName: String, awayTeamName: String) {
     val homeTeam: Team = Team(homeTeamName)
     val awayTeam: Team = Team(awayTeamName)
     val started: Date = Date()

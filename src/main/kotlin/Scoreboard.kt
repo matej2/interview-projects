@@ -9,18 +9,32 @@ class Scoreboard {
             .toList()
     }
     fun addMatch(match: Match) = matchList.add(match)
-    fun finishMatch(match: Match): Boolean {
-        val foundMatch: MutableList<Match> = matchList
+    private fun getMatchIndexByTeamNames(homeTeamName: String, awayTeamName: String): Int {
+        return matchList.indexOfFirst { it.homeTeam.name == homeTeamName && it.awayTeam.name == awayTeamName }
+    }
+    fun updateMatch(match: Match, homeTeamScore: Int, awayTeamScore: Int): Boolean {
+        val matchIndex = getMatchIndexByTeamNames(match.homeTeam.name, match.awayTeam.name)
+
+        if (matchIndex == -1) {
+            return false
+        }
+        val foundMatch: Match = matchList[matchIndex]
+        foundMatch.updateScore(homeTeamScore, awayTeamScore)
+
+        return true
+    }
+    private fun getMatch(match: Match): Match? {
+        return matchList
             .stream()
             .filter { it.homeTeam.name == match.homeTeam.name}
             .filter { it.awayTeam.name == match.awayTeam.name}
-            .toList()
+            .findFirst()
+            .orElse(null)
+    }
+    fun finishMatch(match: Match): Boolean {
+        val foundMatch: Match = getMatch(match) ?: return false
 
-        if(foundMatch.size == 0) {
-            return false
-        }
-
-        matchList.remove(foundMatch[0])
+        matchList.remove(foundMatch)
 
         return true
     }
