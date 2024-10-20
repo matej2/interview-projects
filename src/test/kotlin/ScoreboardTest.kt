@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 internal class ScoreboardTest{
@@ -7,10 +8,24 @@ internal class ScoreboardTest{
     fun getSummaryForEmptyScoreboardTest() {
         val scoreboard: Scoreboard = getScoreboardInstance()
 
-        val summary = scoreboard.matchList
+        val summary = scoreboard.getSummary()
 
-        assertTrue(summary.isEmpty())
+        assertNotNull(summary)
+        assertEquals(0, summary.size)
     }
+
+    @Test
+    fun getSummaryForNonEmptyScoreboardTest() {
+        val scoreboard: Scoreboard = getScoreboardInstance()
+        val match: Match = getMatchInstance()
+
+        scoreboard.addMatch(match)
+        val summary = scoreboard.getSummary()
+
+        assertNotNull(summary)
+        assertEquals(1, summary.size)
+    }
+
 
     @Test
     fun addMatchValidInputTest() {

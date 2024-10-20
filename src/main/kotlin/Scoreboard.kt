@@ -3,7 +3,7 @@ import java.util.stream.Collectors
 class Scoreboard() {
     var matchList: MutableList<Match> = mutableListOf()
 
-    fun getSummary(): MutableList<Match>? {
+    fun getSummary(): List<Match>? {
         return matchList
             .stream()
             .sorted(compareBy<Match> { it.getTotalScore() })
