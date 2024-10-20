@@ -4,6 +4,7 @@ This is an example libary to support fotball matches. Each scoreboard can have m
 
 ## Assumptions
 
-- game class assumes that score can be set directly, but score cannot be unsigned (thats the reason for UByte)
+- game class assumes that score can be set directly
 - team name is specified only once
 - initial team score is set automatically to 0 and cannot be overridden
+- scoreboard will return summary by 

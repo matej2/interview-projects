@@ -1,17 +1,14 @@
+import java.util.stream.Collectors
+
 class Scoreboard() {
-    val matchList = mutableListOf<Match>()
+    var matchList: MutableList<Match> = mutableListOf()
 
-    fun getSummary(): String {
-        val orderedMatch = matchList
+    fun getSummary(): MutableList<Match>? {
+        return matchList
             .stream()
-            .sorted(compareBy { it.getTotalScore() })
-            .sorted(compareBy { it.started })
-
-        var output = "Scoreboard summary: \n\n"
-        orderedMatch
-            .forEach {
-                output += "Match between ${it.homeTeam.name} and ${it.awayTeam.name}: ${it.homeTeam.score} : ${it.awayTeam.score}"
-            }
-        return output
+            .sorted(compareBy<Match> { it.getTotalScore() })
+            .sorted(compareBy<Match> { it.started })
+            .toList()
     }
+    fun addMatch(match: Match) = matchList.add(match)
 }
