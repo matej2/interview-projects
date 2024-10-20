@@ -1,7 +1,7 @@
 class Scoreboard {
-    private var matchList: MutableList<Match> = mutableListOf()
+    private val matchList: MutableList<Match> = mutableListOf()
 
-    fun getSummary(): List<Match>? {
+    fun getSummary(): List<Match> {
         return matchList
             .stream()
             .sorted(compareBy<Match> { it.getTotalScore() })

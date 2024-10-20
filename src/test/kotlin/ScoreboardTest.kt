@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 internal class ScoreboardTest{
@@ -11,7 +10,6 @@ internal class ScoreboardTest{
 
         val summary = scoreboard.getSummary()
 
-        assertNotNull(summary)
         assertEquals(0, summary.size)
     }
 
@@ -23,7 +21,6 @@ internal class ScoreboardTest{
         scoreboard.addMatch(match)
         val summary = scoreboard.getSummary()
 
-        assertNotNull(summary)
         assertEquals(1, summary.size)
     }
 
@@ -35,7 +32,7 @@ internal class ScoreboardTest{
 
         scoreboard.addMatch(match)
         val summary = scoreboard.getSummary()
-        assertNotNull(summary)
+
         assertEquals(1, summary.size)
         assertEquals ("Nanjing United", summary[0].homeTeam.name)
         assertEquals ("Karachi Palace", summary[0].awayTeam.name)
@@ -49,8 +46,10 @@ internal class ScoreboardTest{
 
         scoreboard.addMatch(match)
         val result: Boolean = scoreboard.finishMatch(match)
+        val matchList = scoreboard.getSummary()
 
         assertTrue(result)
+        assertEquals(0, matchList.size)
     }
 
     @Test
@@ -64,6 +63,6 @@ internal class ScoreboardTest{
         assertFalse(result)
     }
 
-    fun getScoreboardInstance() = Scoreboard()
-    fun getMatchInstance() = Match("Nanjing United", "Karachi Palace")
+    private fun getScoreboardInstance() = Scoreboard()
+    private fun getMatchInstance() = Match("Nanjing United", "Karachi Palace")
 }
