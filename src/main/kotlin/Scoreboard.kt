@@ -11,4 +11,19 @@ class Scoreboard() {
             .toList()
     }
     fun addMatch(match: Match) = matchList.add(match)
+    fun finishMatch(match: Match): Boolean {
+        val foundMatch: MutableList<Match> = matchList
+            .stream()
+            .filter { it.homeTeam.name == match.homeTeam.name}
+            .filter { it.awayTeam.name == match.awayTeam.name}
+            .toList()
+
+        if(foundMatch.size == 0) {
+            return false
+        }
+
+        matchList.remove(foundMatch[0])
+
+        return true
+    }
 }
