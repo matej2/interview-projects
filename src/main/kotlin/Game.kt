@@ -1,10 +1,8 @@
-class Game {
-    var homeTeam : Int = 0
-    var awayTeam : Int = 0
+class Game (val homeTeam: Team, val awayTeam: Team) {
 
-
-    fun updateScore(homeTeamScore: Int, awayTeamScore: Int) {
-
+    fun updateScore(homeTeamScore: UByte, awayTeamScore: UByte) {
+        homeTeam.score = homeTeamScore
+        awayTeam.score = awayTeamScore
     }
 
 
