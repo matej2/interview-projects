@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-internal class GameTest {
+internal class MatchTest {
     @Test
     fun updateScoreInitialScoreTest() {
         val game = getGameInstance()
@@ -20,5 +20,5 @@ internal class GameTest {
         assertEquals(2, game.awayTeam.score)
     }
 
-    fun getGameInstance() = Game(homeTeamName = "Chengdu United", awayTeamName = "Chelmsford United")
+    fun getGameInstance() = Match(homeTeamName = "Chengdu United", awayTeamName = "Chelmsford United")
 }

@@ -1,4 +1,4 @@
-class Game (val homeTeamName: String, val awayTeamName: String) {
+class Match (val homeTeamName: String, val awayTeamName: String) {
     var homeTeam: Team = Team(homeTeamName)
     var awayTeam: Team = Team(awayTeamName)
 
