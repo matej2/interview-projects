@@ -7,6 +7,7 @@ Make a library that would support processing of live football world cup matches 
 ## Assumptions
 
 - At the certain time range, one team can play only one game
-- Team name is set only once and cannot be changed
-- Initial score will be set to 0 and cannot be overwritten
-- App is not aware of match history - its previous state
+- Team name is set only at initialization and cannot be changed
+- Initial score will be set to 0, but can be later updated
+- App is not aware of match or scoreboard history - its previous state
+- Scoreboard will return match list ordered by its total score ascending
