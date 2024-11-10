@@ -9,6 +9,10 @@ public class Match {
         entry.put(teamOne, 0);
         entry.put(teamTwo, 0);
 
+        if (getMatchIndex(teamOne, teamTwo) != null) {
+            throw new RuntimeException("Entry already exists");
+        }
+
         matchlist.put(UUID.randomUUID().toString(), entry);
     }
 
@@ -29,7 +33,7 @@ public class Match {
                 .filter(entry -> entry.getValue().containsKey(teamOne))
                 .filter(entry -> entry.getValue().containsKey(teamTwo))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Match not found"));
+                .orElse(new AbstractMap.SimpleEntry<>(null, null));
 
         return foundMatch.getKey();
     }

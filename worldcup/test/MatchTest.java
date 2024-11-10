@@ -13,15 +13,20 @@ class MatchTest {
     @BeforeEach
     public void setup() {
         match = new Match();
-        match.startMatch(teamOne, teamTwo);
     }
     @Test
-    void testStartMatchValidInput() {
+    void testStartMatch() {
+        // Scenario 1: Valid input
         match.startMatch("A", "B");
+
+        // Scenario 2: Match already exists
+        assertThrows(RuntimeException.class, () -> match.startMatch("A", "B"));
     }
 
     @Test
     void testGetMatchIndexValidInput() {
+        match.startMatch(teamOne, teamTwo);
+
         String foundMatch = match.getMatchIndex(teamOne, teamTwo);
 
         assertNotNull(foundMatch);
@@ -29,6 +34,8 @@ class MatchTest {
 
     @Test
     void testUpdateMatchValidInput() {
+        match.startMatch(teamOne, teamTwo);
+
         match.updateMatch(teamOne, 1, teamTwo, 0);
 
         Map<String, Integer> updatedMatch = getMatch();
