@@ -16,17 +16,26 @@ public class Scoreboard {
         matchList.put(UUID.randomUUID().toString(), newMatch);
     }
 
-    public void updateMatch(String teamOne, int teamOneScore, String teamTwo, int teamTwoScore) {
+    private String getMatchIndexOrThrow(String teamOne, String teamTwo) {
         String existingMatchIndex = getMatchIndex(teamOne, teamTwo);
         if (getMatchIndex(teamOne, teamTwo) == null) {
             throw new RuntimeException("Match does not exist");
         }
+        return existingMatchIndex;
+    }
+
+    public void updateMatch(String teamOne, int teamOneScore, String teamTwo, int teamTwoScore) {
+        String existingMatchIndex = getMatchIndexOrThrow(teamOne, teamTwo);
 
         Match existingMatch = matchList.get(existingMatchIndex);
         existingMatch.setTeamOneScore(teamOneScore);
         existingMatch.setTeamTwoScore(teamTwoScore);
 
         matchList.put(existingMatchIndex, existingMatch);
+    }
+
+    public void finishMatch(String teamOne, String teamTwo) {
+        matchList.remove(getMatchIndexOrThrow(teamOne, teamTwo));
     }
 
     public String getMatchIndex(String teamOne, String teamTwo) {

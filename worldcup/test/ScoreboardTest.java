@@ -67,6 +67,13 @@ class ScoreboardTest {
         assertEquals(2, list.get(2).getTotalScore());
     }
 
+    @Test
+    void testFinishMatch() {
+        initScoreboard();
+
+        scoreboard.finishMatch(teamOne, teamTwo);
+    }
+
     private void initScoreboard() {
         scoreboard.startMatch(teamOne, teamTwo);
     }
