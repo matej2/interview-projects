@@ -3,14 +3,13 @@ import java.util.*;
 public class Match {
     private final HashMap<String, Map<String, Integer>> matchlist = new HashMap<>();
 
-    // TODO: Check if it already exists
     public void startMatch(String teamOne, String teamTwo) {
         HashMap<String, Integer> entry = new HashMap<>();
         entry.put(teamOne, 0);
         entry.put(teamTwo, 0);
 
         if (getMatchIndex(teamOne, teamTwo) != null) {
-            throw new RuntimeException("Entry already exists");
+            throw new RuntimeException("Match already exists");
         }
 
         matchlist.put(UUID.randomUUID().toString(), entry);
@@ -18,8 +17,11 @@ public class Match {
 
     public void updateMatch(String teamOne, int teamOneScore, String teamTwo, int teamTwoScore) {
         String existingMatchIndex = getMatchIndex(teamOne, teamTwo);
-        Map<String, Integer> existingMatch = matchlist.get(existingMatchIndex);
+        if (getMatchIndex(teamOne, teamTwo) == null) {
+            throw new RuntimeException("Match does not exist");
+        }
 
+        Map<String, Integer> existingMatch = matchlist.get(existingMatchIndex);
         existingMatch.put(teamOne, teamOneScore);
         existingMatch.put(teamTwo, teamTwoScore);
 

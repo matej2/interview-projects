@@ -43,6 +43,12 @@ class MatchTest {
         assertEquals(0, updatedMatch.get(teamTwo));
     }
 
+
+    @Test
+    void testUpdateMatchMatchDoesNotExist() {
+        assertThrows(RuntimeException.class, () -> match.updateMatch(teamOne, 1, teamTwo, 0));
+    }
+
     private Map<String, Integer> getMatch() {
         String existingMatchIndex = match.getMatchIndex(teamOne, teamTwo);
         return match.getMatchList().get(existingMatchIndex);
