@@ -1,47 +1,20 @@
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.*;
 
+@Getter
+@Setter
+@AllArgsConstructor
 public class Match {
-    private final HashMap<String, Map<String, Integer>> matchlist = new HashMap<>();
+    String teamOneName;
+    Integer teamOneScore;
+    String teamTwoName;
+    Integer teamTwoScore;
+    Date started;
 
-    public void startMatch(String teamOne, String teamTwo) {
-        HashMap<String, Integer> entry = new HashMap<>();
-        entry.put(teamOne, 0);
-        entry.put(teamTwo, 0);
-
-        if (getMatchIndex(teamOne, teamTwo) != null) {
-            throw new RuntimeException("Match already exists");
-        }
-
-        matchlist.put(UUID.randomUUID().toString(), entry);
-    }
-
-    public void updateMatch(String teamOne, int teamOneScore, String teamTwo, int teamTwoScore) {
-        String existingMatchIndex = getMatchIndex(teamOne, teamTwo);
-        if (getMatchIndex(teamOne, teamTwo) == null) {
-            throw new RuntimeException("Match does not exist");
-        }
-
-        Map<String, Integer> existingMatch = matchlist.get(existingMatchIndex);
-        existingMatch.put(teamOne, teamOneScore);
-        existingMatch.put(teamTwo, teamTwoScore);
-
-        matchlist.put(existingMatchIndex, existingMatch);
-    }
-
-    public String getMatchIndex(String teamOne, String teamTwo) {
-        Map.Entry<String, Map<String, Integer>> foundMatch = matchlist
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().containsKey(teamOne))
-                .filter(entry -> entry.getValue().containsKey(teamTwo))
-                .findFirst()
-                .orElse(new AbstractMap.SimpleEntry<>(null, null));
-
-        return foundMatch.getKey();
-    }
-
-    // TODO: Ordering
-    public Map<String, Map<String, Integer>> getMatchList() {
-        return matchlist;
+    public static Match initMatch(String teamOne, String teamTwo) {
+        return new Match(teamOne, 0, teamTwo, 0, new Date());
     }
 }
