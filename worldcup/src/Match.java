@@ -1,12 +1,10 @@
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Match {
     String teamOneName;
     Integer teamOneScore;
@@ -14,7 +12,17 @@ public class Match {
     Integer teamTwoScore;
     Date started;
 
-    public static Match initMatch(String teamOne, String teamTwo) {
-        return new Match(teamOne, 0, teamTwo, 0, new Date());
+    private Match() {}
+
+    public Match(String teamOne, String teamTwo) {
+        this.teamOneName = teamOne;
+        this.teamTwoName = teamTwo;
+        this.teamOneScore = 0;
+        this.teamTwoScore = 0;
+        this.started = new Date();
+    }
+
+    public Integer getTotalScore() {
+        return teamOneScore + teamTwoScore;
     }
 }

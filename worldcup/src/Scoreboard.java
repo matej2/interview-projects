@@ -1,5 +1,8 @@
+import lombok.Getter;
+
 import java.util.*;
 
+@Getter
 public class Scoreboard {
     private Map<String, Match> matchList = new HashMap<>();
 
@@ -8,7 +11,7 @@ public class Scoreboard {
             throw new RuntimeException("Match already exists");
         }
 
-        Match newMatch = Match.initMatch(teamOne, teamTwo);
+        Match newMatch = new Match(teamOne, teamTwo);
 
         matchList.put(UUID.randomUUID().toString(), newMatch);
     }
@@ -38,8 +41,12 @@ public class Scoreboard {
         return foundMatch.getKey();
     }
 
-    // TODO: Ordering
-    public Map<String, Match> getMatchList() {
-        return matchList;
+    public List<Match> getOrderedScoreboard() {
+        return matchList
+                .values()
+                .stream()
+                .sorted(Comparator.comparing(Match::getTotalScore))
+                .sorted(Comparator.comparing(Match::getStarted))
+                .toList();
     }
 }
