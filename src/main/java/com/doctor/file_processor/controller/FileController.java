@@ -1,6 +1,6 @@
 package com.doctor.file_processor.controller;
 
-import com.doctor.file_processor.model.FileRequest;
+import com.doctor.file_processor.model.Doctor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class FileController {
     }
     @PostMapping(value = "/file", consumes = "application/json")
     public ResponseEntity<String> sendFile(
-            @RequestBody FileRequest request
+            @RequestBody Doctor request
             ) {
-        return new ResponseEntity<>(request.body(), HttpStatus.OK);
+        return new ResponseEntity<>(request.toString(), HttpStatus.OK);
     }
 }
