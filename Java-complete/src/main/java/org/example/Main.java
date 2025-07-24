@@ -11,55 +11,60 @@ public class Main {
         System.out.println("Budget list name");
         String name = scanner.nextLine();
 
+        System.out.println("Enter number of days in month ");
+        byte numOfDays = scanner.nextByte();
+
         System.out.println("Enter monthly income for " + name);
         long income = scanner.nextLong();
 
         System.out.println("Enter monthly expenses for food");
-        long expensesFood = scanner.nextLong();
+        float expensesFood = scanner.nextLong();
 
         System.out.println("Enter monthly expenses for transportation");
-        long expensesTransportation = scanner.nextLong();
+        float expensesTransportation = scanner.nextFloat();
 
         System.out.println("Enter monthly expenses for subscriptions");
-        long expensesSubscriptions = scanner.nextLong();
+        float expensesSubscriptions = scanner.nextFloat();
 
-        long remainingBudget = income - (expensesFood + expensesTransportation + expensesSubscriptions);
+        float remainingBudget = income - (expensesFood + expensesTransportation + expensesSubscriptions);
+
+        // Calculate relative daily expenses
+        float relativeDailyExpensesFood = expensesFood / numOfDays;
+        float relativeDailyExpensesTransportation = expensesTransportation / numOfDays;
+        float relativeDailyExpensesSubscriptions = expensesSubscriptions / numOfDays;
 
         System.out.printf("""
-                Budget status for %s:
-                Income: %d
-                
-                Expenses:
-                  - food: %d
-                  - transportation: %d
-                  - subscriptions: %d
-                
-                Remaining monthly budget: %d
-                """,
+                        Budget status for %s:
+                        
+                        Number of days: %d
+                        Income: %d
+                        
+                        Expenses:
+                          - food: %f
+                          - transportation: %f
+                          - subscriptions: %f
+                        
+                        Remaining monthly budget: %f
+                        
+                        Relative daily expenses:
+                          - food: %f
+                          - transportation: %f
+                          - subscriptions: %f
+                        
+                        """,
                 name,
+                numOfDays,
                 income,
                 expensesFood,
                 expensesTransportation,
                 expensesSubscriptions,
-                remainingBudget);
+                remainingBudget,
+                relativeDailyExpensesFood,
+                relativeDailyExpensesTransportation,
+                relativeDailyExpensesSubscriptions);
     }
 
     public static void main(String[] args) {
-        String name = "John";
-
-        System.out.println("Hello " + name);
-
-        String x = "water";
-        String y = "cola";
-        String temp;
-
-        temp = x;
-        x = y;
-        y = temp;
-
-        System.out.println(x);
-        System.out.println(y);
-
         Main.userInput();
     }
 }
