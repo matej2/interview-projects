@@ -4,6 +4,15 @@ package org.example;
 import java.util.Scanner;
 
 public class Main {
+    // TODO: Replace with log4j calls
+    private static void l(double str) {
+        Main.l(String.valueOf(str));
+    }
+
+
+    private static void l(String str) {
+        System.out.println(str);
+    }
 
     public static void userInput() {
         Scanner scanner = new Scanner(System.in);
@@ -65,24 +74,23 @@ public class Main {
         scanner.close();
     }
 
-    public static void triangle() {
-        double x;
-        double y;
-        double z;
+    private static double readVar(Scanner scanner, String varName){
+        System.out.println("Enter the value of " + varName);
+        return scanner.nextDouble();
+    }
 
+
+
+    public static void pentagonalPrisym() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the value of x: ");
-        x = scanner.nextDouble();
-        System.out.println("Enter the value of y: ");
-        y = scanner.nextDouble();
+        double a = Main.readVar(scanner, "x");
+        double h = Main.readVar(scanner, "h");
 
-        z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-
-        System.out.println("The value of z is: " + z);
-        scanner.close();
+        double volume = 0.25 * Math.sqrt(5*(5+2*Math.sqrt(5)))*Math.pow(a, 2)*h;
+        Main.l(volume);
     }
 
     public static void main(String[] args) {
-        Main.triangle();
+        Main.pentagonalPrisym();
     }
 }
