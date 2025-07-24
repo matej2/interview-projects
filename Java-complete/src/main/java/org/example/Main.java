@@ -25,7 +25,7 @@ public class Main {
 
         long remainingBudget = income - (expensesFood + expensesTransportation + expensesSubscriptions);
 
-        System.out.print(String.format("""
+        System.out.printf("""
                 Budget status for %s:
                 Income: %d
                 
@@ -41,7 +41,7 @@ public class Main {
                 expensesFood,
                 expensesTransportation,
                 expensesSubscriptions,
-                remainingBudget));
+                remainingBudget);
     }
 
     public static void main(String[] args) {
@@ -53,8 +53,8 @@ public class Main {
         String y = "cola";
         String temp;
 
-        temp = y;
-        y = x;
+        temp = x;
+        x = y;
         y = temp;
 
         System.out.println(x);
