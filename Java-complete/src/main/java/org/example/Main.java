@@ -62,9 +62,27 @@ public class Main {
                 relativeDailyExpensesFood,
                 relativeDailyExpensesTransportation,
                 relativeDailyExpensesSubscriptions);
+        scanner.close();
+    }
+
+    public static void triangle() {
+        double x;
+        double y;
+        double z;
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the value of x: ");
+        x = scanner.nextDouble();
+        System.out.println("Enter the value of y: ");
+        y = scanner.nextDouble();
+
+        z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+
+        System.out.println("The value of z is: " + z);
+        scanner.close();
     }
 
     public static void main(String[] args) {
-        Main.userInput();
+        Main.triangle();
     }
 }
