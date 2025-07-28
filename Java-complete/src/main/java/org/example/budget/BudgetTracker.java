@@ -1,18 +1,16 @@
 package org.example.budget;
 
+import org.example.util.InputUtils;
+
 import java.util.Scanner;
 
 public class BudgetTracker {
     final private Scanner scanner = new Scanner(System.in);
 
-    private void enterValueMsg(String name) {
-        System.out.println("Enter the value for: " + name);
-    }
-
     public void run() {
         String name;
         do {
-            this.enterValueMsg("name");
+            InputUtils.enterValueMsg("name");
 
             name = this.scanner.nextLine();
 
@@ -50,20 +48,20 @@ public class BudgetTracker {
     private void getInfo(String name) {
         Scanner scanner = new Scanner(System.in);
 
-        this.enterValueMsg("number of days");
+        InputUtils.enterValueMsg("number of days");
         byte numOfDays = scanner.nextByte();
 
 
-        this.enterValueMsg("income");
+        InputUtils.enterValueMsg("income");
         long income = scanner.nextLong();
 
-        this.enterValueMsg("food expenses");
+        InputUtils.enterValueMsg("food expenses");
         float expensesFood = scanner.nextLong();
 
-        this.enterValueMsg("transportation expenses");
+        InputUtils.enterValueMsg("transportation expenses");
         float expensesTransportation = scanner.nextFloat();
 
-        this.enterValueMsg("subscription expenses");
+        InputUtils.enterValueMsg("subscription expenses");
         float expensesSubscriptions = scanner.nextFloat();
 
         float totalExpenses = expensesFood + expensesTransportation + expensesSubscriptions;

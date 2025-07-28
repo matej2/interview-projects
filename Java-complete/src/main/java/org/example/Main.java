@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.budget.BudgetTracker;
+import org.example.finance.CompoundInterestCalculator;
 
 import java.util.Scanner;
 
@@ -16,8 +16,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        BudgetTracker budgetTracker = new BudgetTracker();
+        //BudgetTracker budgetTracker = new BudgetTracker();
         //Main.pentagonalPrisym();
-        budgetTracker.run();
+        //budgetTracker.run();
+        CompoundInterestCalculator.run();
     }
 }
