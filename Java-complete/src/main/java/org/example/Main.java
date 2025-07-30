@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.bank.FinanceApp;
 import org.example.finance.CompoundInterestCalculator;
 
 import java.util.Scanner;
@@ -13,12 +14,16 @@ public class Main {
 
         double volume = 0.25 * Math.sqrt(5 * (5 + 2 * Math.sqrt(5))) * Math.pow(a, 2) * h;
         System.out.println(volume);
+
+        scanner.close();
     }
 
     public static void main(String[] args) {
         //BudgetTracker budgetTracker = new BudgetTracker();
         //Main.pentagonalPrisym();
         //budgetTracker.run();
-        CompoundInterestCalculator.run();
+        //CompoundInterestCalculator.run();
+        FinanceApp app = new FinanceApp();
+        app.run();
     }
 }
