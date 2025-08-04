@@ -21,18 +21,19 @@ public class FinanceApp {
         do {
             System.out.print(OPTIONS);
             selection = SCANNER.nextByte();
+            double amount;
 
             if (selection != 0) {
                 switch (selection) {
-                    case 1 -> System.out.println("Your balance: "+account.getBalance());
+                    case 1 -> System.out.printf("\nBalance: %.2f €\n", account.getBalance());
                     case 2 -> {
                         System.out.println("Enter amount to deposit");
-                        long amount = SCANNER.nextLong();
+                        amount = SCANNER.nextLong();
                         account.deposit(amount);
                     }
                     case 3 -> {
                         System.out.println("Enter amount to withdraw");
-                        long amount = SCANNER.nextLong();
+                        amount = SCANNER.nextLong();
                         account.withdraw(amount);
                     }
                     case 4 -> {

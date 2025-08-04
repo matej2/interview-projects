@@ -1,17 +1,17 @@
 package org.example.bank;
 
 public class AccountManager {
-    private long balance = 0;
+    private double balance = 0;
 
-    public void deposit(long value) {
+    public void deposit(double value) {
         balance += value;
     }
 
-    public void withdraw(long value) {
+    public void withdraw(double value) {
         balance -= value;
     }
 
-    public  long getBalance() {
+    public double getBalance() {
         return balance;
     }
 }
