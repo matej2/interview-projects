@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.bank.Calculator;
 import org.example.bank.FinanceApp;
 import org.example.finance.CompoundInterestCalculator;
 
@@ -23,7 +24,8 @@ public class Main {
         //Main.pentagonalPrisym();
         //budgetTracker.run();
         //CompoundInterestCalculator.run();
-        FinanceApp app = new FinanceApp();
-        app.run();
+        //FinanceApp app = new FinanceApp();
+        //app.run();
+        Calculator.run();
     }
 }
