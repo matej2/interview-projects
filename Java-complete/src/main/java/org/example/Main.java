@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.bank.Calculator;
 import org.example.bank.FinanceApp;
+import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
 
 import java.util.Scanner;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void pentagonalPrisym() {
+        System.out.println("Enter a and h for pentagonal prisym:");
         Scanner scanner = new Scanner(System.in);
         double a = scanner.nextDouble();
         double h = scanner.nextDouble();
@@ -20,12 +22,42 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //BudgetTracker budgetTracker = new BudgetTracker();
-        //Main.pentagonalPrisym();
-        //budgetTracker.run();
-        //CompoundInterestCalculator.run();
-        //FinanceApp app = new FinanceApp();
-        //app.run();
-        Calculator.run();
+        BudgetTracker budgetTracker = new BudgetTracker();
+        FinanceApp financeApp = new FinanceApp();
+        Scanner scanner = new Scanner(System.in);
+
+        byte option;
+
+
+
+        do {
+            System.out.println("""
+                ************
+                1. PentagonalPrisym calculation
+                2. Budget tracker
+                3. Compound interest calculator
+                4. Finance app
+                5. Calculator
+                ************
+                """);
+            System.out.println("Select an option");
+
+            option = scanner.nextByte();
+            switch(option) {
+                case 1: Main.pentagonalPrisym();
+                    break;
+                case 2: budgetTracker.run();
+                    break;
+                case 3: CompoundInterestCalculator.run();
+                    break;
+                case 4: financeApp.run();
+                    break;
+                case 5: Calculator.run();
+                    break;
+                case 0: return;
+                default:
+                    System.out.println("Incorrect option");
+            }
+        } while (true);
     }
 }
