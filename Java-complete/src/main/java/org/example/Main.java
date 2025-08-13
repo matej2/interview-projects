@@ -4,6 +4,7 @@ import org.example.bank.Calculator;
 import org.example.bank.FinanceApp;
 import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
+import org.example.libary.LibaryManagement;
 
 import java.util.Scanner;
 
@@ -25,6 +26,7 @@ public class Main {
         BudgetTracker budgetTracker = new BudgetTracker();
         FinanceApp financeApp = new FinanceApp();
         Scanner scanner = new Scanner(System.in);
+        LibaryManagement libary = new LibaryManagement();
 
         byte option;
 
@@ -38,6 +40,8 @@ public class Main {
                 3. Compound interest calculator
                 4. Finance app
                 5. Calculator
+                6. Libary
+                0. Exit
                 ************
                 """);
             System.out.println("Select an option");
@@ -54,6 +58,11 @@ public class Main {
                     break;
                 case 5: Calculator.run();
                     break;
+                case 6: {
+                    libary.addBook("Title3", "Author3");
+                    libary.addBook("Title4", "Author4", "Genre4");
+                    libary.print();
+                }
                 case 0: return;
                 default:
                     System.out.println("Incorrect option");
