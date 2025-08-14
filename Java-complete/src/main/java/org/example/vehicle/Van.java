@@ -4,11 +4,11 @@ import org.example.vehicle.base.Driveable;
 import org.example.vehicle.base.Vehicle;
 
 public class Van extends Vehicle implements Driveable {
-    final private short payloadCapacity;
+    final private short payloadCapacityKg;
 
-    public Van(String make, String model, short year, short payloadCapacity) {
+    public Van(String make, String model, short year, short payloadCapacityKg) {
         super(make, model, year);
-        this.payloadCapacity = payloadCapacity;
+        this.payloadCapacityKg = payloadCapacityKg;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Van extends Vehicle implements Driveable {
                 "year=" + year +
                 ", model='" + model + '\'' +
                 ", make='" + make + '\'' +
-                ", payloadCapacity=" + payloadCapacity +
+                ", payloadCapacity=" + payloadCapacityKg +
                 '}';
     }
 }

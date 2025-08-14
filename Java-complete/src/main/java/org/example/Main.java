@@ -5,6 +5,7 @@ import org.example.bank.FinanceApp;
 import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
 import org.example.libary.LibaryManagement;
+import org.example.vehicle.VehicleRentalService;
 
 import java.util.Scanner;
 
@@ -41,6 +42,7 @@ public class Main {
                 4. Finance app
                 5. Calculator
                 6. Libary
+                7. Car rental service
                 0. Exit
                 ************
                 """);
@@ -62,6 +64,9 @@ public class Main {
                     libary.addBook("Title3", "Author3");
                     libary.addBook("Title4", "Author4", "Genre4");
                     libary.print();
+                }
+                case 7: {
+                    VehicleRentalService.run();
                 }
                 case 0: return;
                 default:
