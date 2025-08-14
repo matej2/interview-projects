@@ -1,7 +1,10 @@
 package org.example.vehicle;
 
+import org.example.vehicle.base.Driveable;
+import org.example.vehicle.base.Vehicle;
+
 public class Car extends Vehicle implements Driveable {
-    private byte numOfSeats;
+    final private byte numOfSeats;
 
     public Car(String make, String model, short year, byte numOfSeats) {
         super(make, model, year);
@@ -20,6 +23,11 @@ public class Car extends Vehicle implements Driveable {
 
     @Override
     public String toString() {
-        return String.format("%s %s %d", make, model, year);
+        return "Car{" +
+                "numOfSeats=" + numOfSeats +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                '}';
     }
 }
