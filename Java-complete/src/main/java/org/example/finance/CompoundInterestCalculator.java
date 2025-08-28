@@ -1,14 +1,16 @@
 package org.example.finance;
 
 import org.example.util.InputUtils;
+import org.example.util.ScannerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 
-public class CompoundInterestCalculator {
+public class CompoundInterestCalculator implements Runnable {
+    private final Scanner scanner = ScannerFactory.createScanner();
 
-    public static void run(Scanner scanner) {
+    public void run() {
 
         InputUtils.enterValueMsg("principal");
         double principal = scanner.nextLong();

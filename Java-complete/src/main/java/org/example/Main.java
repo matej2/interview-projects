@@ -5,7 +5,6 @@ import org.example.bank.FinanceApp;
 import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
 import org.example.libary.Libary;
-import org.example.libary.LibaryManagement;
 import org.example.vehicle.VehicleRentalService;
 
 import java.util.Scanner;
@@ -24,10 +23,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        Scanner SCANNER = new Scanner(System.in);
+
         BudgetTracker budgetTracker = new BudgetTracker();
         FinanceApp financeApp = new FinanceApp();
-        Scanner SCANNER = new Scanner(System.in);
-        LibaryManagement libary = new LibaryManagement();
+        Libary libary = new Libary();
+        CompoundInterestCalculator compoundInterestCalculator = new CompoundInterestCalculator();
+        VehicleRentalService vehicleRentalService = new VehicleRentalService();
 
         byte option;
 
@@ -52,20 +54,22 @@ public class Main {
             switch(option) {
                 case 1: Main.pentagonalPrisym(SCANNER);
                     break;
-                case 2: budgetTracker.run(SCANNER);
+                case 2: budgetTracker.run();
                     break;
-                case 3: CompoundInterestCalculator.run(SCANNER);
+                case 3: compoundInterestCalculator.run();
                     break;
-                case 4: financeApp.run(SCANNER);
+                case 4: financeApp.run();
                     break;
                 case 5: Calculator.run();
                     break;
                 case 6: {
-                    Libary.run();
+                    libary.run();
                 }
+                break;
                 case 7: {
-                    VehicleRentalService.run();
+                    vehicleRentalService.run();
                 }
+                break;
                 case 0: return;
                 default:
                     System.out.println("Incorrect option");

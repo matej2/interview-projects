@@ -1,8 +1,10 @@
 package org.example.bank;
 
+import org.example.util.ScannerFactory;
+
 import java.util.Scanner;
 
-public class FinanceApp {
+public class FinanceApp implements Runnable {
     String OPTIONS = """
                 ## Select option ##
                 
@@ -11,8 +13,9 @@ public class FinanceApp {
                 3. Withdraw money
                 4. Exit app
                 """;
+    Scanner scanner = ScannerFactory.createScanner();
 
-    public void run(Scanner scanner) {
+    public void run() {
         AccountManager account = new AccountManager();
         boolean isFinished = false;
 

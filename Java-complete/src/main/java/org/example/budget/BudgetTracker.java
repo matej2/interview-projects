@@ -1,15 +1,18 @@
 package org.example.budget;
 
 import org.example.util.InputUtils;
+import org.example.util.ScannerFactory;
 
 import java.util.Scanner;
 
-public class BudgetTracker {
+public class BudgetTracker implements Runnable {
     private final String AVAILABLE_BUDGET = "_";
     private final String TRANSPORTATION_BUDGET = "#";
     private final byte LENGTH = 20;
+    private Scanner scanner = ScannerFactory.createScanner();
 
-    public void run(Scanner scanner) {
+    public void run() {
+
         String name;
         do {
             InputUtils.enterValueMsg("name");
