@@ -1,6 +1,6 @@
 package org.example.vehicle.base;
 
-public class Vehicle {
+public abstract class Vehicle {
     protected String make;
     protected String model;
     protected short year;

@@ -3,7 +3,6 @@ package org.example.bank;
 import java.util.Scanner;
 
 public class FinanceApp {
-    Scanner SCANNER = new Scanner(System.in);
     String OPTIONS = """
                 ## Select option ##
                 
@@ -13,14 +12,14 @@ public class FinanceApp {
                 4. Exit app
                 """;
 
-    public void run() {
+    public void run(Scanner scanner) {
         AccountManager account = new AccountManager();
         boolean isFinished = false;
 
         byte selection;
         do {
             System.out.print(OPTIONS);
-            selection = SCANNER.nextByte();
+            selection = scanner.nextByte();
             double amount;
 
             if (selection != 0) {
@@ -28,12 +27,12 @@ public class FinanceApp {
                     case 1 -> System.out.printf("\nBalance: %.2f €\n", account.getBalance());
                     case 2 -> {
                         System.out.println("Enter amount to deposit");
-                        amount = SCANNER.nextLong();
+                        amount = scanner.nextLong();
                         account.deposit(amount);
                     }
                     case 3 -> {
                         System.out.println("Enter amount to withdraw");
-                        amount = SCANNER.nextLong();
+                        amount = scanner.nextLong();
                         account.withdraw(amount);
                     }
                     case 4 -> {
@@ -48,6 +47,6 @@ public class FinanceApp {
 
         } while (!isFinished);
 
-        SCANNER.close();
+        scanner.close();
     }
 }

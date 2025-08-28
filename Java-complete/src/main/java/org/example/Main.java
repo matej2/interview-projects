@@ -4,6 +4,7 @@ import org.example.bank.Calculator;
 import org.example.bank.FinanceApp;
 import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
+import org.example.libary.Libary;
 import org.example.libary.LibaryManagement;
 import org.example.vehicle.VehicleRentalService;
 
@@ -11,9 +12,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void pentagonalPrisym() {
+    public static void pentagonalPrisym(Scanner scanner) {
         System.out.println("Enter a and h for pentagonal prisym:");
-        Scanner scanner = new Scanner(System.in);
         double a = scanner.nextDouble();
         double h = scanner.nextDouble();
 
@@ -26,7 +26,7 @@ public class Main {
     public static void main(String[] args) {
         BudgetTracker budgetTracker = new BudgetTracker();
         FinanceApp financeApp = new FinanceApp();
-        Scanner scanner = new Scanner(System.in);
+        Scanner SCANNER = new Scanner(System.in);
         LibaryManagement libary = new LibaryManagement();
 
         byte option;
@@ -48,22 +48,20 @@ public class Main {
                 """);
             System.out.println("Select an option");
 
-            option = scanner.nextByte();
+            option = SCANNER.nextByte();
             switch(option) {
-                case 1: Main.pentagonalPrisym();
+                case 1: Main.pentagonalPrisym(SCANNER);
                     break;
-                case 2: budgetTracker.run();
+                case 2: budgetTracker.run(SCANNER);
                     break;
-                case 3: CompoundInterestCalculator.run();
+                case 3: CompoundInterestCalculator.run(SCANNER);
                     break;
-                case 4: financeApp.run();
+                case 4: financeApp.run(SCANNER);
                     break;
                 case 5: Calculator.run();
                     break;
                 case 6: {
-                    libary.addBook("Title3", "Author3");
-                    libary.addBook("Title4", "Author4", "Genre4");
-                    libary.print();
+                    Libary.run();
                 }
                 case 7: {
                     VehicleRentalService.run();

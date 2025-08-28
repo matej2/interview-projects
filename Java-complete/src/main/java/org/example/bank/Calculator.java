@@ -1,6 +1,6 @@
 package org.example.bank;
 
-public class Calculator {
+public abstract class Calculator {
 
     static private String[][] getArray() {
         byte SIZE = 3;

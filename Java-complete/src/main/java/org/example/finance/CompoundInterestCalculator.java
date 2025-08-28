@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class CompoundInterestCalculator {
 
-    public static void run() {
-        Scanner scanner = new Scanner(System.in);
+    public static void run(Scanner scanner) {
 
         InputUtils.enterValueMsg("principal");
         double principal = scanner.nextLong();

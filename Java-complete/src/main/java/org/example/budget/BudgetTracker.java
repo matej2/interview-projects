@@ -5,23 +5,22 @@ import org.example.util.InputUtils;
 import java.util.Scanner;
 
 public class BudgetTracker {
-    final private Scanner scanner = new Scanner(System.in);
+    private final String AVAILABLE_BUDGET = "_";
+    private final String TRANSPORTATION_BUDGET = "#";
+    private final byte LENGTH = 20;
 
-    public void run() {
+    public void run(Scanner scanner) {
         String name;
         do {
             InputUtils.enterValueMsg("name");
 
-            name = this.scanner.nextLine();
+            name = scanner.nextLine();
 
             this.getInfo(name);
         } while(!name.equals("q"));
     }
 
     private void visualizeBudget(double totalExpense, double income) {
-        final String AVAILABLE_BUDGET = "_";
-        final String TRANSPORTATION_BUDGET = "#";
-        final byte LENGTH = 20;
 
         if (income > totalExpense) {
             double percentageExpense = (totalExpense / income);
