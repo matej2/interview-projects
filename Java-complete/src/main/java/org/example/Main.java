@@ -5,13 +5,15 @@ import org.example.bank.FinanceApp;
 import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
 import org.example.libary.Libary;
+import org.example.util.ScannerFactory;
 import org.example.vehicle.VehicleRentalService;
 
 import java.util.Scanner;
 
 public class Main {
 
-    public static void pentagonalPrisym(Scanner scanner) {
+    public static void pentagonalPrisym() {
+        Scanner scanner = ScannerFactory.createScanner();
         System.out.println("Enter a and h for pentagonal prisym:");
         double a = scanner.nextDouble();
         double h = scanner.nextDouble();
@@ -23,17 +25,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Scanner SCANNER = new Scanner(System.in);
-
-        BudgetTracker budgetTracker = new BudgetTracker();
-        FinanceApp financeApp = new FinanceApp();
-        Libary libary = new Libary();
-        CompoundInterestCalculator compoundInterestCalculator = new CompoundInterestCalculator();
-        VehicleRentalService vehicleRentalService = new VehicleRentalService();
+        Scanner scanner = ScannerFactory.createScanner();
 
         byte option;
-
-
+        Runnable selected = null;
 
         do {
             System.out.println("""
@@ -50,30 +45,34 @@ public class Main {
                 """);
             System.out.println("Select an option");
 
-            option = SCANNER.nextByte();
+            option = scanner.nextByte();
             switch(option) {
-                case 1: Main.pentagonalPrisym(SCANNER);
+                case 1: Main.pentagonalPrisym();
                     break;
-                case 2: budgetTracker.run();
+                case 2: selected = new BudgetTracker();
                     break;
-                case 3: compoundInterestCalculator.run();
+                case 3: selected = new CompoundInterestCalculator();
                     break;
-                case 4: financeApp.run();
+                case 4: selected = new FinanceApp();
                     break;
-                case 5: Calculator.run();
+                case 5: selected = new Calculator();
                     break;
-                case 6: {
-                    libary.run();
-                }
+                case 6:
+                    selected = new Libary();
                 break;
-                case 7: {
-                    vehicleRentalService.run();
+                case 7: selected = new VehicleRentalService();
+                    break;
+                case 0: {
+                    scanner.close();
+                    return;
                 }
-                break;
-                case 0: return;
                 default:
                     System.out.println("Incorrect option");
             }
+            if(selected != null) {
+                selected.run();
+            }
+            selected = null;
         } while (true);
     }
 }

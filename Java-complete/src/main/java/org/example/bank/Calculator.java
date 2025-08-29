@@ -1,6 +1,6 @@
 package org.example.bank;
 
-public abstract class Calculator {
+public class Calculator implements Runnable {
 
     static private String[][] getArray() {
         byte SIZE = 3;
@@ -29,7 +29,7 @@ public abstract class Calculator {
 
     }
 
-    static public void run() {
+     public void run() {
         String[][] result = getArray();
         printCalc(result);
     }
