@@ -14,4 +14,15 @@ public class LinkedTreeNode {
     public String toString() {
         return String.format("%s: (%s) (%s)", data, one, two);
     }
+
+    public Integer getMaxSearchComplexity() {
+        int complexity = 1;
+        if (one != null) {
+            complexity+=one.getMaxSearchComplexity();
+        }
+        if (two != null) {
+            complexity+=two.getMaxSearchComplexity();
+        }
+        return complexity;
+    }
 }

@@ -10,6 +10,8 @@ public class LinkedTreeApp implements Runnable{
         LinkedTreeNode child2 = new LinkedTreeNode(null, null, 3.1);
 
         LinkedTreeNode parent = new LinkedTreeNode(child1, child2, "parent");
+
         System.out.println(parent);
+        System.out.println(parent.getMaxSearchComplexity());
     }
 }
