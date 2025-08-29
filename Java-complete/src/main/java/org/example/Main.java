@@ -5,6 +5,7 @@ import org.example.bank.FinanceApp;
 import org.example.budget.BudgetTracker;
 import org.example.finance.CompoundInterestCalculator;
 import org.example.libary.Libary;
+import org.example.linkedTree.LinkedTreeApp;
 import org.example.util.ScannerFactory;
 import org.example.vehicle.VehicleRentalService;
 
@@ -40,6 +41,7 @@ public class Main {
                 5. Calculator
                 6. Libary
                 7. Car rental service
+                8. Linked tree
                 0. Exit
                 ************
                 """);
@@ -59,8 +61,10 @@ public class Main {
                     break;
                 case 6:
                     selected = new Libary();
-                break;
+                    break;
                 case 7: selected = new VehicleRentalService();
+                    break;
+                case 8: selected = new LinkedTreeApp();
                     break;
                 case 0: {
                     scanner.close();
