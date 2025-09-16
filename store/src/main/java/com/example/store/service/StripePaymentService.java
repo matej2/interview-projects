@@ -1,4 +1,4 @@
-package com.example.store;
+package com.example.store.service;
 
 public class StripePaymentService implements PaymentService {
     @Override
