@@ -1,6 +1,6 @@
 package com.example.store.engeneer.controller;
 
-import com.example.store.engeneer.dto.SoftwareEngineer;
+import com.example.store.engeneer.model.SoftwareEngineer;
 import com.example.store.engeneer.service.SoftwareEngineerService;
 import org.springframework.web.bind.annotation.*;
 

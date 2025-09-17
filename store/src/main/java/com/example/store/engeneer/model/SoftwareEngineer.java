@@ -1,4 +1,4 @@
-package com.example.store.engeneer.dto;
+package com.example.store.engeneer.model;
 
 import jakarta.persistence.*;
 

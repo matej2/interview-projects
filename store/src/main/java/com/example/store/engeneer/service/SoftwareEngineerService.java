@@ -1,6 +1,6 @@
 package com.example.store.engeneer.service;
 
-import com.example.store.engeneer.dto.SoftwareEngineer;
+import com.example.store.engeneer.model.SoftwareEngineer;
 import com.example.store.engeneer.repository.SoftwareEngineerRepository;
 import org.springframework.stereotype.Service;
 
