@@ -22,4 +22,12 @@ public class SoftwareEngineerService {
     public void addSoftwareEngineer(SoftwareEngineer softwareEngineer) {
         softwareEngineerRepository.save(softwareEngineer);
     }
+
+    public SoftwareEngineer getSoftwareEngineerById(Integer id) {
+        return softwareEngineerRepository
+                .findById(id)
+                .orElseThrow(() ->
+                    new IllegalArgumentException(String.format("%s not found", id))
+                );
+    }
 }
