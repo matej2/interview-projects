@@ -3,7 +3,6 @@ package com.example.postgredatabase.repositories;
 import com.example.postgredatabase.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -16,10 +15,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(SpringExtension.class)
 public class AuthorRepositoryIntegrationTests {
 
-    private final AuthorRepositoriy underTest;
+    private final AuthorRepository underTest;
 
     @Autowired
-    public AuthorRepositoryIntegrationTests(AuthorRepositoriy underTest) {
+    public AuthorRepositoryIntegrationTests(AuthorRepository underTest) {
         this.underTest = underTest;
     }
 
