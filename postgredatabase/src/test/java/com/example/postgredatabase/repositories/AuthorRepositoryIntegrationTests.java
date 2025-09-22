@@ -1,6 +1,7 @@
 package com.example.postgredatabase.repositories;
 
 import com.example.postgredatabase.domain.Author;
+import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -34,5 +35,46 @@ public class AuthorRepositoryIntegrationTests {
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(author);
+    }
+
+    @Test
+    public void testThatAuthorGetAuthorsWithAgeLessThan() {
+        Author authorA = Author.builder()
+                .age(35)
+                .name("John")
+                .build();
+        underTest.save(authorA);
+
+        Author authorB = Author.builder()
+                .age(22)
+                .name("John")
+                .build();
+
+        underTest.save(authorB);
+
+        Iterable<Author> results = underTest.ageLessThan(30);
+        assertThat(results).containsExactly(authorB);
+    }
+
+    @Test
+    public void testThatGetAuthorsWithAgeGreaterThan() {
+        Author authorA = Author.builder()
+                .age(35)
+                .name("John")
+                .build();
+        underTest.save(authorA);
+
+        Author authorB = Author.builder()
+                .age(22)
+                .name("John")
+                .build();
+
+        underTest.save(authorB);
+
+        Iterable<Author> results = underTest.findAuthorsWithAgeGreaterThan(30);
+
+        assertThat(results).containsExactly(authorA);
+
+
     }
 }

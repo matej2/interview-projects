@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Books")
+@Table(name = "books")
 public class Book {
     @Id
     private String isbn;

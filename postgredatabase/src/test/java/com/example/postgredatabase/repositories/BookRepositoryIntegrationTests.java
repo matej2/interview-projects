@@ -14,12 +14,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class BookDAOImplTests {
+public class BookRepositoryIntegrationTests {
 
     private final BookRepository bookRepository;
 
     @Autowired
-    public BookDAOImplTests(BookRepository bookRepository) {
+    public BookRepositoryIntegrationTests(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
