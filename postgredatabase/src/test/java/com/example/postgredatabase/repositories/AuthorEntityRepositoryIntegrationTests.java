@@ -1,7 +1,6 @@
 package com.example.postgredatabase.repositories;
 
-import com.example.postgredatabase.domain.Author;
-import net.bytebuddy.asm.Advice;
+import com.example.postgredatabase.domain.entities.AuthorEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +13,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class AuthorRepositoryIntegrationTests {
+public class AuthorEntityRepositoryIntegrationTests {
 
     private final AuthorRepository underTest;
 
     @Autowired
-    public AuthorRepositoryIntegrationTests(AuthorRepository underTest) {
+    public AuthorEntityRepositoryIntegrationTests(AuthorRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
     public void testThatAuthorCanBeCreated() {
-        Author author = Author.builder()
+        AuthorEntity author = AuthorEntity.builder()
                 .age(22)
                 .name("John")
                 .build();
         underTest.save(author);
 
-        Optional<Author> result = underTest.findById(author.getId());
+        Optional<AuthorEntity> result = underTest.findById(author.getId());
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(author);
@@ -39,39 +38,39 @@ public class AuthorRepositoryIntegrationTests {
 
     @Test
     public void testThatAuthorGetAuthorsWithAgeLessThan() {
-        Author authorA = Author.builder()
+        AuthorEntity authorA = AuthorEntity.builder()
                 .age(35)
                 .name("John")
                 .build();
         underTest.save(authorA);
 
-        Author authorB = Author.builder()
+        AuthorEntity authorB = AuthorEntity.builder()
                 .age(22)
                 .name("John")
                 .build();
 
         underTest.save(authorB);
 
-        Iterable<Author> results = underTest.ageLessThan(30);
+        Iterable<AuthorEntity> results = underTest.ageLessThan(30);
         assertThat(results).containsExactly(authorB);
     }
 
     @Test
     public void testThatGetAuthorsWithAgeGreaterThan() {
-        Author authorA = Author.builder()
+        AuthorEntity authorA = AuthorEntity.builder()
                 .age(35)
                 .name("John")
                 .build();
         underTest.save(authorA);
 
-        Author authorB = Author.builder()
+        AuthorEntity authorB = AuthorEntity.builder()
                 .age(22)
                 .name("John")
                 .build();
 
         underTest.save(authorB);
 
-        Iterable<Author> results = underTest.findAuthorsWithAgeGreaterThan(30);
+        Iterable<AuthorEntity> results = underTest.findAuthorsWithAgeGreaterThan(30);
 
         assertThat(results).containsExactly(authorA);
 

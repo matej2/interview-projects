@@ -1,7 +1,7 @@
 package com.example.postgredatabase.repositories;
 
-import com.example.postgredatabase.domain.Author;
-import com.example.postgredatabase.domain.Book;
+import com.example.postgredatabase.domain.entities.AuthorEntity;
+import com.example.postgredatabase.domain.entities.BookEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +14,23 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class BookRepositoryIntegrationTests {
+public class BookEntityRepositoryIntegrationTests {
 
     private final BookRepository bookRepository;
 
     @Autowired
-    public BookRepositoryIntegrationTests(BookRepository bookRepository) {
+    public BookEntityRepositoryIntegrationTests(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
     @Test
     public void testThatCreateBookGeneratesCorrectSql() {
-        Author author = Author.builder()
+        AuthorEntity author = AuthorEntity.builder()
                 .age(22)
                 .name("John")
                 .build();
 
-        Book book = Book.builder()
+        BookEntity book = BookEntity.builder()
                 .title("Test")
                 .isbn("test_isbn")
                 .author(author)
@@ -38,7 +38,7 @@ public class BookRepositoryIntegrationTests {
 
         bookRepository.save(book);
 
-        final Optional<Book> result = bookRepository.findById(book.getIsbn());
+        final Optional<BookEntity> result = bookRepository.findById(book.getIsbn());
         assertThat(result).isPresent();
         assertThat(result.get().getIsbn()).isEqualTo(book.getIsbn());
     }

@@ -1,6 +1,7 @@
 package com.example.postgredatabase.service;
 
-import com.example.postgredatabase.domain.Author;
+import com.example.postgredatabase.domain.dto.AuthorDTO;
+import com.example.postgredatabase.domain.entities.AuthorEntity;
 import com.example.postgredatabase.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,11 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public Iterable<Author> getAllAuthors() {
+    public Iterable<AuthorEntity> getAllAuthors() {
         return authorRepository.findAll();
     }
 
-    public void createAuthor(Author author) {
-        authorRepository.save(author);
+    public AuthorEntity createAuthor(AuthorEntity author) {
+        return authorRepository.save(author);
     }
 }
