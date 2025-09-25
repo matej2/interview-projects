@@ -6,11 +6,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Set;
 
 @Component
+@Slf4j
 public class SchedulerConfig {
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -37,8 +38,18 @@ public class SchedulerConfig {
         return new String(Files.readAllBytes(Paths.get(res.getFile().getPath())));
     }
 
-    private static void rename(Path source, Path target) throws IOException {
+    private static void move(Path source, Path target) throws IOException {
         Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private void checkOrCreateDirectories(Path validOutputDir, Path invalidOutputDir) throws IOException {
+        if (!Files.exists(validOutputDir)) {
+            Files.createDirectories(validOutputDir);
+        }
+
+        if (!Files.exists(invalidOutputDir)) {
+            Files.createDirectories(invalidOutputDir);
+        }
     }
 
     @Scheduled(cron = "0 * * * * *")
@@ -48,30 +59,25 @@ public class SchedulerConfig {
         Path validOutputDir = Paths.get("src", "main", "resources", "files", "valid");
         Path invalidOutputDir = Paths.get("src", "main", "resources", "files", "error");
 
-        // Create the target directory if it doesn't exist
-        if (!Files.exists(validOutputDir)) {
-            Files.createDirectories(validOutputDir);
-        }
-
-        if (!Files.exists(invalidOutputDir)) {
-            Files.createDirectories(invalidOutputDir);
-        }
+        checkOrCreateDirectories(validOutputDir, invalidOutputDir);
 
         for (Resource resource: doctorInputJson) {
-            Errors result = null;
+            if (resource == null || resource.getFilename() == null) {
+                continue;
+            }
+            log.info("Processing resource: {}", resource.getFilename());
+
             String resourceBody = getResourceBody(resource);
-
-            Doctor doctorInput = objectMapper.readValue(resourceBody, Doctor.class);
-
-            Set<ConstraintViolation<Doctor>> violations = validator.validate(doctorInput);
-
             Path validPath = validOutputDir.resolve(resource.getFilename());
             Path invalidPath = invalidOutputDir.resolve(resource.getFilename());
 
-            if (result != null && result.hasErrors()) {
-                rename(resource.getFile().toPath(), invalidPath);
+            Doctor doctorInput = objectMapper.readValue(resourceBody, Doctor.class);
+            Set<ConstraintViolation<Doctor>> violations = validator.validate(doctorInput);
+
+            if (!violations.isEmpty()) {
+                move(resource.getFile().toPath(), invalidPath);
             } else {
-                rename(resource.getFile().toPath(), validPath);
+                move(resource.getFile().toPath(), validPath);
             }
         }
 

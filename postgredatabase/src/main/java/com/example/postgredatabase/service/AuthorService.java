@@ -1,25 +1,13 @@
 package com.example.postgredatabase.service;
 
-import com.example.postgredatabase.domain.dto.AuthorDTO;
 import com.example.postgredatabase.domain.entities.AuthorEntity;
-import com.example.postgredatabase.repositories.AuthorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-@Service
-public class AuthorService {
-    private AuthorRepository authorRepository;
+public interface AuthorService {
+    Iterable<AuthorEntity> getAllAuthors();
 
-    @Autowired
-    public AuthorService(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
+    Page<AuthorEntity> findAll(Pageable pageable);
 
-    public Iterable<AuthorEntity> getAllAuthors() {
-        return authorRepository.findAll();
-    }
-
-    public AuthorEntity createAuthor(AuthorEntity author) {
-        return authorRepository.save(author);
-    }
+    AuthorEntity createAuthor(AuthorEntity author);
 }
