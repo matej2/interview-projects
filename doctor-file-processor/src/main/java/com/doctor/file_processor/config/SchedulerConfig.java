@@ -1,4 +1,4 @@
-package com.doctor.file_processor.scheduler;
+package com.doctor.file_processor.config;
 
 import com.doctor.file_processor.model.Doctor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,23 +23,42 @@ import java.util.Set;
 @Slf4j
 public class SchedulerConfig {
 
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private final Validator validator = factory.getValidator();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    private final String basePath = "src/main/resources";
+    private final Path validOutputDir = Path.of(String.format("%s/%s", basePath, "valid"));
+    private final Path invalidOutputDir = Path.of(String.format("%s/%s", basePath, "error"));
 
+    PathMatchingResourcePatternResolver resolver;
+
+    public SchedulerConfig(PathMatchingResourcePatternResolver resolver) throws IOException {
+        this.resolver = resolver;
+        checkOrCreateDirectories(validOutputDir, invalidOutputDir);
+    }
 
     private Resource[] getResources() throws IOException {
         return resolver.getResources("files/input/*.json");
-
     }
 
     private String getResourceBody(Resource res) throws IOException {
         return new String(Files.readAllBytes(Paths.get(res.getFile().getPath())));
     }
 
-    private static void move(Path source, Path target) throws IOException {
-        Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
+    private void processDocument(Resource document, Path targetPath) throws IOException {
+        if (document.getFilename() != null) {
+            Path docPath = validOutputDir.resolve(document.getFilename());
+            Files.move(document.getFile().toPath(), docPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    private void processValidDocument(Resource document) throws IOException {
+        processDocument(document, validOutputDir);
+    }
+
+    private void processInvalidDocument(Resource document) throws IOException {
+        processDocument(document, invalidOutputDir);
     }
 
     private void checkOrCreateDirectories(Path validOutputDir, Path invalidOutputDir) throws IOException {
@@ -55,32 +74,23 @@ public class SchedulerConfig {
     @Scheduled(cron = "0 * * * * *")
     public void getDoctorFiles() throws IOException {
         Resource[] doctorInputJson = getResources();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Path validOutputDir = Paths.get("src", "main", "resources", "files", "valid");
-        Path invalidOutputDir = Paths.get("src", "main", "resources", "files", "error");
-
-        checkOrCreateDirectories(validOutputDir, invalidOutputDir);
+        String resourceBody;
 
         for (Resource resource: doctorInputJson) {
-            if (resource == null || resource.getFilename() == null) {
+            if (resource.getFilename() == null) {
                 continue;
             }
             log.info("Processing resource: {}", resource.getFilename());
+            resourceBody = getResourceBody(resource);
 
-            String resourceBody = getResourceBody(resource);
-            Path validPath = validOutputDir.resolve(resource.getFilename());
-            Path invalidPath = invalidOutputDir.resolve(resource.getFilename());
-
-            Doctor doctorInput = objectMapper.readValue(resourceBody, Doctor.class);
-            Set<ConstraintViolation<Doctor>> violations = validator.validate(doctorInput);
+            Doctor validatedInputDocument = objectMapper.readValue(resourceBody, Doctor.class);
+            Set<ConstraintViolation<Doctor>> violations = validator.validate(validatedInputDocument);
 
             if (!violations.isEmpty()) {
-                move(resource.getFile().toPath(), invalidPath);
+                processValidDocument(resource);
             } else {
-                move(resource.getFile().toPath(), validPath);
+                processInvalidDocument(resource);
             }
         }
-
-
     }
 }
