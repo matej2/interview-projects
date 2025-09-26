@@ -1,7 +1,66 @@
 package com.doctor.file_processor.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Controller;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Controller
 public class FileProcessorService {
+    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private final Validator validator = factory.getValidator();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final String basePath = "src/main/resources";
+    private final Path validOutputDir = Path.of(String.format("%s/%s", basePath, "valid"));
+    private final Path invalidOutputDir = Path.of(String.format("%s/%s", basePath, "error"));
+    PathMatchingResourcePatternResolver resolver;
+
+    public FileProcessorService(PathMatchingResourcePatternResolver resolver) throws IOException {
+        this.resolver = resolver;
+        checkOrCreateDirectories();
+    }
+
+    private void checkOrCreateDirectories() throws IOException {
+        if (!Files.exists(validOutputDir)) {
+            Files.createDirectories(validOutputDir);
+        }
+
+        if (!Files.exists(invalidOutputDir)) {
+            Files.createDirectories(invalidOutputDir);
+        }
+    }
+
+    public Resource[] getResources() throws IOException {
+        return resolver.getResources("files/input/*.json");
+    }
+
+    public String getResourceBody(Resource res) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(res.getFile().getPath())));
+    }
+
+    public void processDocument(Resource document, Path targetPath) throws IOException {
+        if (document.getFilename() != null) {
+            Path docPath = validOutputDir.resolve(document.getFilename());
+            Files.move(document.getFile().toPath(), docPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    public void processValidDocument(Resource document) throws IOException {
+        processDocument(document, validOutputDir);
+    }
+
+    public void processInvalidDocument(Resource document) throws IOException {
+        processDocument(document, invalidOutputDir);
+    }
+
 }

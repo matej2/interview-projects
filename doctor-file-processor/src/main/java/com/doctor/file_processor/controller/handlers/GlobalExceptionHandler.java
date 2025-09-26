@@ -1,4 +1,4 @@
-package com.doctor.file_processor.handlers;
+package com.doctor.file_processor.controller.handlers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
