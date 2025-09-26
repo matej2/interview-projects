@@ -1,9 +1,10 @@
 package com.doctor.file_processor.service;
 
-import com.doctor.file_processor.domain.dto.DoctorDto;
+import com.doctor.file_processor.domain.dto.EventDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import jdk.jfr.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class SchedulerService extends DocumentValidator {
+public class SchedulerService extends DocumentValidator<EventDto> {
 
     private final String basePath = "src/main/resources";
     private final FileProcessorService fileProcessorService;
@@ -43,7 +44,7 @@ public class SchedulerService extends DocumentValidator {
             log.info("Processing resource: {}", resource.getFilename());
             resourceBody = fileProcessorService.getResourceBody(resource);
 
-            Set<ConstraintViolation<DoctorDto>> violations = validateDocument(resourceBody);
+            Set<ConstraintViolation<EventDto>> violations = validateDocument(resourceBody);
 
             if (!violations.isEmpty()) {
                 fileProcessorService.processValidDocument(resource);
