@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
-        // Create a map of field errors
-        // Return appropriate error response
-        return new ResponseEntity<>("Incorrect input", ex.getStatusCode());
+        return new ResponseEntity<>(String.format("Incorrect request body: %s - %s", ex.getFieldError().getField(), ex.getFieldError().getDefaultMessage()), ex.getStatusCode());
     }
 }
