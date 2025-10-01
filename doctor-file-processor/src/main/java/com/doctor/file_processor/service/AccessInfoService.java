@@ -4,18 +4,24 @@ import com.doctor.file_processor.domain.entity.AccessInfo;
 import com.doctor.file_processor.repositories.AccessInfoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
 public class AccessInfoService {
-    private AccessInfoRepository accessInfoRepository;
+    private final AccessInfoRepository accessInfoRepository;
 
     public AccessInfoService(AccessInfoRepository accessInfoRepository) {
         this.accessInfoRepository = accessInfoRepository;
     }
 
-    private void createEntry(AccessInfo accessInfo) {
-        accessInfoRepository.save(accessInfo);
+    public AccessInfo createEntry(String remoteIp) {
+        AccessInfo newAccInfo = AccessInfo.builder()
+                .created(new Date())
+                .ip(remoteIp)
+                .numOfCallsLastMinute(1L)
+                .build();
+        return accessInfoRepository.save(newAccInfo);
     }
 
     private void updateEntry(AccessInfo accessInfo) {
@@ -24,13 +30,20 @@ public class AccessInfoService {
         accessInfoRepository.save(accessInfo);
     }
 
-    public void updateAccessInfo(AccessInfo inputAccInfo) {
-        Optional<AccessInfo> existingAccessInfo = accessInfoRepository.findById(inputAccInfo.getIp());
+    public void updateAccessInfo(String remoteIp) {
+        Optional<AccessInfo> existingAccessInfo = accessInfoRepository.findById(remoteIp);
 
-        existingAccessInfo.ifPresentOrElse(
-                this::updateEntry,
-                () -> createEntry(inputAccInfo)
-                );
+        existingAccessInfo.ifPresent(
+                this::updateEntry
+        );
+    }
 
+    public void deleteAll() {
+        accessInfoRepository.deleteAll();
+    }
+
+    public AccessInfo findByIp(String remoteIp) {
+        Optional<AccessInfo> existing = accessInfoRepository.findById(remoteIp);
+        return existing.orElse(null);
     }
 }

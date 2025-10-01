@@ -1,6 +1,7 @@
 package com.doctor.file_processor.controller.handlers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +10,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
-        return new ResponseEntity<>(String.format("Incorrect request body: %s - %s", ex.getFieldError().getField(), ex.getFieldError().getDefaultMessage()), ex.getStatusCode());
+        String fieldName = "Unknown";
+        String fieldErrorMsg = "Unknown";
+        FieldError fieldError = ex.getFieldError();
+
+        if (fieldError != null) {
+            fieldName = fieldError.getField();
+            fieldErrorMsg = fieldError.getDefaultMessage();
+        }
+        return new ResponseEntity<>(String.format("Incorrect request body: %s - %s", fieldName, fieldErrorMsg), ex.getStatusCode());
     }
 }

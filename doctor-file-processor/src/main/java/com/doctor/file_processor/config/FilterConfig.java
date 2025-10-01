@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean<RateLimitFilter> loggingFilter(AccessInfoService accessInfoService) {
+    public FilterRegistrationBean<RateLimitFilter> rateLimitFilter(AccessInfoService accessInfoService) {
         FilterRegistrationBean<RateLimitFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new RateLimitFilter(accessInfoService));
-        registrationBean.addUrlPatterns("/api/*"); // Apply filter to API routes
+        registrationBean.addUrlPatterns("/api/*");
         return registrationBean;
     }
 }

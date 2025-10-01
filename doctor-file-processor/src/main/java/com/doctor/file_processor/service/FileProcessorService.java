@@ -1,9 +1,5 @@
 package com.doctor.file_processor.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Controller;
@@ -16,14 +12,10 @@ import java.nio.file.StandardCopyOption;
 
 @Controller
 public class FileProcessorService {
-    private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    private final Validator validator = factory.getValidator();
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     private final String basePath = "src/main/resources";
     private final Path validOutputDir = Path.of(String.format("%s/%s", basePath, "valid"));
     private final Path invalidOutputDir = Path.of(String.format("%s/%s", basePath, "error"));
-    PathMatchingResourcePatternResolver resolver;
+    private final PathMatchingResourcePatternResolver resolver;
 
     public FileProcessorService(PathMatchingResourcePatternResolver resolver) throws IOException {
         this.resolver = resolver;

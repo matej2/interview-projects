@@ -4,15 +4,14 @@ import com.doctor.file_processor.domain.entity.AccessInfo;
 import com.doctor.file_processor.service.AccessInfoService;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Date;
+import java.io.IOException;
 
 @WebFilter
-@Slf4j
 public class RateLimitFilter implements Filter {
 
-    private AccessInfoService accessInfoService;
+    private final AccessInfoService accessInfoService;
 
     public RateLimitFilter(AccessInfoService accessInfoService) {
         this.accessInfoService = accessInfoService;
@@ -24,14 +23,23 @@ public class RateLimitFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
-        log.info("Rate limiting filter");
-        AccessInfo accessInfo = AccessInfo.builder()
-                .created(new Date())
-                .ip(request.getRemoteAddr())
-                .build();
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+        String remoteAddr = request.getRemoteAddr();
 
-        accessInfoService.updateAccessInfo(accessInfo);
+        AccessInfo existingAccInfo = accessInfoService.findByIp(remoteAddr);
+        Integer CALL_LIMIT = 5;
+
+        // Not 100%
+        if (existingAccInfo == null) {
+            existingAccInfo = accessInfoService.createEntry(remoteAddr);
+        }
+
+        if (existingAccInfo.getNumOfCallsLastMinute() <= CALL_LIMIT) {
+            accessInfoService.updateAccessInfo(remoteAddr);
+            chain.doFilter(request, response);
+        } else {
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "Maximum number of calls reached");
+        }
     }
 
     @Override

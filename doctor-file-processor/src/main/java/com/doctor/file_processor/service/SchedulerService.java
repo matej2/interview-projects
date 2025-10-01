@@ -4,10 +4,8 @@ import com.doctor.file_processor.domain.dto.EventDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import jdk.jfr.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,18 +16,11 @@ import java.util.Set;
 @Slf4j
 public class SchedulerService extends DocumentValidator<EventDto> {
 
-    private final String basePath = "src/main/resources";
     private final FileProcessorService fileProcessorService;
-    private final Validator validator;
-    private final PathMatchingResourcePatternResolver resolver;
-    private final ObjectMapper objectMapper;
 
-    public SchedulerService(FileProcessorService fileProcessorService, PathMatchingResourcePatternResolver resolver, Validator validator, ObjectMapper objectMapper) throws IOException {
+    public SchedulerService(FileProcessorService fileProcessorService, Validator validator, ObjectMapper objectMapper) {
         super(objectMapper, validator);
         this.fileProcessorService = fileProcessorService;
-        this.validator = validator;
-        this.resolver = resolver;
-        this.objectMapper = objectMapper;
     }
 
     @Scheduled(cron = "0 * * * * *")
@@ -44,7 +35,7 @@ public class SchedulerService extends DocumentValidator<EventDto> {
             log.info("Processing resource: {}", resource.getFilename());
             resourceBody = fileProcessorService.getResourceBody(resource);
 
-            Set<ConstraintViolation<EventDto>> violations = validateDocument(resourceBody);
+            Set<ConstraintViolation<EventDto>> violations = validateDocument(resourceBody, EventDto.class);
 
             if (!violations.isEmpty()) {
                 fileProcessorService.processValidDocument(resource);

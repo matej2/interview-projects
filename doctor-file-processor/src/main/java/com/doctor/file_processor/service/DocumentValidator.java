@@ -12,14 +12,13 @@ import java.util.Set;
 abstract class DocumentValidator<T> {
     private final ObjectMapper objectMapper;
     private final Validator validator;
-    private Class<T> clazz;
 
     public DocumentValidator(ObjectMapper objectMapper, Validator validator) {
         this.objectMapper = objectMapper;
         this.validator = validator;
     }
 
-    protected Set<ConstraintViolation<T>> validateDocument(String resourceBody) throws JsonProcessingException {
+    protected Set<ConstraintViolation<T>> validateDocument(String resourceBody, Class<T> clazz) throws JsonProcessingException {
         T validatedInputDocument = objectMapper.readValue(resourceBody, clazz);
         return validator.validate(validatedInputDocument);
     }
