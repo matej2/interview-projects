@@ -1,5 +1,6 @@
 package com.doctor.file_processor.domain.dto;
 
+import com.doctor.file_processor.domain.EventStatus;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 
@@ -21,6 +22,10 @@ public record EventDto(
         @Future
         Date endTime,
 
+        String location,
+        EventStatus eventStatus,
+        String description,
+
         @NotEmpty
-        List<Participant> participantList
+        List<ParticipantDto> participantList
 ){}

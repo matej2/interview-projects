@@ -1,6 +1,8 @@
-package com.doctor.file_processor.service;
+package com.doctor.file_processor.service.scheduler;
 
 import com.doctor.file_processor.domain.dto.EventDto;
+import com.doctor.file_processor.service.DocumentValidator;
+import com.doctor.file_processor.service.FileProcessorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -14,11 +16,11 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class SchedulerService extends DocumentValidator<EventDto> {
+public class DocumentProcessorScheduledService extends DocumentValidator<EventDto> {
 
     private final FileProcessorService fileProcessorService;
 
-    public SchedulerService(FileProcessorService fileProcessorService, Validator validator, ObjectMapper objectMapper) {
+    public DocumentProcessorScheduledService(FileProcessorService fileProcessorService, Validator validator, ObjectMapper objectMapper) {
         super(objectMapper, validator);
         this.fileProcessorService = fileProcessorService;
     }

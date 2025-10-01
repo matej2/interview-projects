@@ -7,16 +7,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class RateLimitSchedulerService {
+public class RateLimitScheduledService {
     private final AccessInfoService accessInfoService;
 
-    public RateLimitSchedulerService(AccessInfoService accessInfoService) {
+    public RateLimitScheduledService(AccessInfoService accessInfoService) {
         this.accessInfoService = accessInfoService;
     }
 
     @Scheduled(cron = "0 * * * * *")
     public void resetRateLimit() {
-        // Ideally each client should also be bound to fixed remote IP or have specific number of changes for 24 hours.
+        // Ideally each client should have their own access token assigned and
+        // be bound to fixed remote IP or have specific number of ip changes for 24 hours.
         accessInfoService.deleteAll();
     }
 

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 
-public record Participant(
+public record ParticipantDto(
         @Id
         Integer participantId,
 
