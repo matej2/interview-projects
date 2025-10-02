@@ -1,21 +1,45 @@
-# document-processor
+## Project Overview
 
-Create an application that processes YAML and JSON documents. Application gets input documents from the “input” directory and through an HTTP POST endpoint it offers. Application should process “new” folder every 2 minutes.
+*Acme Events Ltd.* uses a shared network drive to manage JSON-based event documents. However, it frequently encounters issues where files are either missing mandatory fields or do not conform to the latest schema.
 
+To address this, you are tasked with building a Spring Boot application that will automatically process and validate these documents. The application should:
 
-In every case, documents must be inserted into database and validated.
+- Periodically scan a designated directory for new files.
+- Expect new files to appear in a subdirectory named `new/`.
+- After validation, move each file to either `valid/` or `invalid/` depending on the result.
+- Generate an audit file for each processed document, containing:
+    - Field name
+    - Validation message
 
-After document processing is finished:
+## HTTP Validation Endpoint
 
-The document should be stored into the “valid” directory or if something fails in the “invalid” directory. Audit file should be generated for each document containing field and message.
+For external integrations, the application must expose an HTTP endpoint that supports on-demand document validation. This endpoint should:
 
-To protect the application, limit the number of HTTP POST invocations to 5 per 1 minute. If there were 5 requests processed within the last minute already, reject further requests with an appropriate HTTP status code until enough time passes so that there are less than 20 requests processed within the last timeframe. Write a multi-threaded test for this rate limiting.
+- Accept a JSON document via POST request.
+- Return validation results in a structured format.
+- Enforce rate limiting: maximum 5 requests per minute.
+- If the limit is exceeded, respond with an appropriate HTTP 429 (Too Many Requests) status code.
+- Do not use third-party libraries for rate limiting—implement a custom solution.
+- Include a multi-threaded unit test to verify the rate limiting logic under concurrent load.
 
+## Technical Specifications
 
-Project should use latest Java, Spring Framework, ORM (JPA). For build tool you can use Maven. Structure code into 3 layers (controller, logic, DAO/repository). You can document REST endpoints if you want with Swagger or Spring REST Docs and also expose querying doctor, patients, and list of diseases if you want.
+- Java 21 (or latest stable release)
+- Spring Boot (latest version)
+- JPA (Hibernate)
+- Maven for build and dependency management
+- Modular architecture with clearly separated layers:
+    - Controller (REST endpoints)
+    - Service/Logic (business rules and validation)
+    - DAO/Repository (data access)
+- Two Spring profiles:
+    - `dev` for development
+    - `test` for automated testing
+- Extensive unit and integration tests using JUnit and Mockito
+- Custom exception handling and logging for traceability
 
-Application should have 2 profiles for testing and development. For testing use in-memory database H2 and for development use Postgres.
+## Future Improvements
 
-
-Write good tests!
-
+- Add support for schema versioning
+- Integrate with external schema registry
+- Provide a web dashboard for audit history and validation stats
