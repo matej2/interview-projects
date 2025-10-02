@@ -24,17 +24,13 @@ public class AccessInfoService {
         return accessInfoRepository.save(newAccInfo);
     }
 
-    private void updateEntry(AccessInfo accessInfo) {
-        Long currNumOfCalls = accessInfo.getNumOfCallsLastMinute() + 1;
-        accessInfo.setNumOfCallsLastMinute(currNumOfCalls);
-        accessInfoRepository.save(accessInfo);
-    }
-
     public void updateAccessInfo(String remoteIp) {
         Optional<AccessInfo> existingAccessInfo = accessInfoRepository.findById(remoteIp);
 
-        existingAccessInfo.ifPresent(
-                this::updateEntry
+        existingAccessInfo.ifPresent((accessInfo) -> {
+                accessInfo.setNumOfCallsLastMinute(accessInfo.getNumOfCallsLastMinute() + 1);
+                accessInfoRepository.save(accessInfo);
+            }
         );
     }
 
@@ -43,7 +39,6 @@ public class AccessInfoService {
     }
 
     public AccessInfo findByIp(String remoteIp) {
-        Optional<AccessInfo> existing = accessInfoRepository.findById(remoteIp);
-        return existing.orElse(null);
+        return accessInfoRepository.findById(remoteIp).orElse(null);
     }
 }
