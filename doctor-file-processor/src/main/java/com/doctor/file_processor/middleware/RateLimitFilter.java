@@ -38,7 +38,7 @@ public class RateLimitFilter implements Filter {
             accessInfoService.updateAccessInfo(remoteAddr);
             chain.doFilter(request, response);
         } else {
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "Maximum number of calls reached");
+            ((HttpServletResponse) response).sendError(429, "Maximum number of calls reached");
         }
     }
 

@@ -1,5 +1,7 @@
 package com.doctor.file_processor.controller.handlers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +20,6 @@ public class GlobalExceptionHandler {
             fieldName = fieldError.getField();
             fieldErrorMsg = fieldError.getDefaultMessage();
         }
-        return new ResponseEntity<>(String.format("Incorrect request body: %s - %s", fieldName, fieldErrorMsg), ex.getStatusCode());
+        return new ResponseEntity<>(String.format("Incorrect request body: %s - %s", fieldName, fieldErrorMsg), HttpStatus.BAD_REQUEST);
     }
 }

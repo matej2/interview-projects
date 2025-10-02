@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 @Component
-abstract class DocumentValidator<T> {
+public abstract class DocumentValidator<T> {
     private final ObjectMapper objectMapper;
     private final Validator validator;
 
