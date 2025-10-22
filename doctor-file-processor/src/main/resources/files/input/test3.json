@@ -1,0 +1,14 @@
+{
+  "id": 1,
+  "department": "",
+  "patients": [
+    {
+      "id": 5,
+      "firstName": "",
+      "lastName": "test2",
+      "diseases": [
+        "test"
+      ]
+    }
+  ]
+}
