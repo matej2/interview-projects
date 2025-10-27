@@ -1,6 +1,6 @@
 package com.doctor.file_processor.controller;
 
-import com.doctor.file_processor.domain.dto.EventDto;
+import com.doctor.file_processor.domain.dto.ApartmentDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("api")
 @Controller
 public class FileController {
-
-    @PostMapping(value = "/file", consumes = "application/json")
+    @PostMapping(value = "/apartment", consumes = "application/json")
     public ResponseEntity<String> sendFile(
-            @RequestBody @Valid EventDto request
-            ) {
+            @RequestBody @Valid ApartmentDto request
+    ) {
         return new ResponseEntity<>(request.toString(), HttpStatus.OK);
     }
 }

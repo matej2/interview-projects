@@ -1,6 +1,6 @@
 package com.doctor.file_processor.service.scheduler;
 
-import com.doctor.file_processor.domain.dto.EventDto;
+import com.doctor.file_processor.domain.dto.ApartmentDto;
 import com.doctor.file_processor.service.DocumentValidator;
 import com.doctor.file_processor.service.FileProcessorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Component
 @Slf4j
-public class DocumentProcessorScheduledService extends DocumentValidator<EventDto> {
+public class DocumentProcessorScheduledService extends DocumentValidator<ApartmentDto> {
 
     private final FileProcessorService fileProcessorService;
 
@@ -34,7 +34,7 @@ public class DocumentProcessorScheduledService extends DocumentValidator<EventDt
             log.info("Processing resource: {}", resource.toString());
             resourceBody = fileProcessorService.getResourceBody(resource);
 
-            Set<ConstraintViolation<EventDto>> violations = validateDocument(resourceBody, EventDto.class);
+            Set<ConstraintViolation<ApartmentDto>> violations = validateDocument(resourceBody, ApartmentDto.class);
 
             if (violations.isEmpty()) {
                 fileProcessorService.processValidDocument(resource);
