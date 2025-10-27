@@ -1,6 +1,5 @@
 package com.doctor.file_processor.integration;
 
-import com.doctor.file_processor.repositories.AccessInfoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +7,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,8 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class HttpIntegrationTests {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private AccessInfoRepository accessInfoRepository;
 
     @Test
     void testThatHttpVerifiesValidRecord() throws Exception {
@@ -101,27 +98,32 @@ public class HttpIntegrationTests {
         int numberOfThreads = 10;
 
         try(ExecutorService service = Executors.newFixedThreadPool(10)) {
+            final int[] counter = {0};
             CountDownLatch latch = new CountDownLatch(numberOfThreads);
             for (int i = 0; i < numberOfThreads; i++) {
                 log.info(String.valueOf(i));
                 service.submit(() -> {
                     try {
-                        MvcResult result = mockMvc
+                        mockMvc
                                 .perform(post("/api/file")
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .content(event1valid))
                                 .andExpect(status()
                                         .isOk())
                                 .andReturn();
-                        log.info(result.getResponse().getContentAsString());
-                        log.info(String.valueOf(result.getResponse().getStatus()));
+                        counter[0]++;
+
                     } catch (Exception e) {
                         throw new RuntimeException(e);
+                    } finally {
+                        latch.countDown();
                     }
-                    latch.countDown();
                 });
             }
-            log.info(accessInfoRepository.findAll().toString());
+            latch.await();
+            assertThat(counter[0]).isEqualTo(5);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

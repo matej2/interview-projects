@@ -23,7 +23,7 @@ public class RateLimitFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+    public synchronized void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         String remoteAddr = request.getRemoteAddr();
 
         AccessInfo existingAccInfo = accessInfoService.findByIp(remoteAddr);
