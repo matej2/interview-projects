@@ -31,15 +31,12 @@ public class DocumentProcessorScheduledService extends DocumentValidator<EventDt
         String resourceBody;
 
         for (Resource resource: doctorInputJson) {
-            if (resource.getFilename() == null) {
-                continue;
-            }
-            log.info("Processing resource: {}", resource.getFilename());
+            log.info("Processing resource: {}", resource.toString());
             resourceBody = fileProcessorService.getResourceBody(resource);
 
             Set<ConstraintViolation<EventDto>> violations = validateDocument(resourceBody, EventDto.class);
 
-            if (!violations.isEmpty()) {
+            if (violations.isEmpty()) {
                 fileProcessorService.processValidDocument(resource);
             } else {
                 fileProcessorService.processInvalidDocument(resource);
