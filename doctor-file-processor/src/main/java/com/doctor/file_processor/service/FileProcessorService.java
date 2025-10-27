@@ -5,9 +5,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Controller
@@ -37,10 +37,10 @@ public class FileProcessorService {
     }
 
     public String getResourceBody(Resource res) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(res.getFile().getPath())));
+        return Files.readString(res.getFile().toPath(), StandardCharsets.UTF_8);
     }
 
-    public void processDocument(Resource document, Path targetPath) throws IOException {
+    private void processDocument(Resource document, Path targetPath) throws IOException {
         if (document.getFilename() != null) {
             Path docPath = validOutputDir.resolve(document.getFilename());
             Files.move(document.getFile().toPath(), docPath, StandardCopyOption.REPLACE_EXISTING);
