@@ -15,7 +15,7 @@ public class AccessInfoService {
         this.accessInfoRepository = accessInfoRepository;
     }
 
-    public AccessInfo createEntry(String remoteIp) {
+    public synchronized AccessInfo createEntry(String remoteIp) {
         AccessInfo newAccInfo = AccessInfo.builder()
                 .created(new Date())
                 .ip(remoteIp)
@@ -24,7 +24,7 @@ public class AccessInfoService {
         return accessInfoRepository.save(newAccInfo);
     }
 
-    public void updateAccessInfo(String remoteIp) {
+    public synchronized void updateAccessInfo(String remoteIp) {
         Optional<AccessInfo> existingAccessInfo = accessInfoRepository.findById(remoteIp);
 
         existingAccessInfo.ifPresent((accessInfo) -> {
