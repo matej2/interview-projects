@@ -42,7 +42,11 @@ public class HttpIntegrationTests {
         mockMvc
                 .perform(post("/api/apartment")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(event1valid))
+                        .content(event1valid)
+                        .with(request -> {
+                            request.setRemoteAddr("192.168.1.1"); // set client IP
+                            return request;
+                        }))
                 .andExpect(status()
                         .isOk())
                 .andExpect(content()
@@ -60,7 +64,11 @@ public class HttpIntegrationTests {
         mockMvc
                 .perform(post("/api/apartment")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(event1invalid))
+                        .content(event1invalid)
+                        .with(request -> {
+                            request.setRemoteAddr("192.168.1.2"); // set client IP
+                            return request;
+                        }))
                 .andExpect(status()
                         .isBadRequest())
                 .andExpect(content().string(containsString(expectedResponseTitle)))
@@ -87,7 +95,11 @@ public class HttpIntegrationTests {
                         mockMvc
                                 .perform(post("/api/apartment")
                                         .contentType(MediaType.APPLICATION_JSON)
-                                        .content(event1valid))
+                                        .content(event1valid)
+                                        .with(request -> {
+                                            request.setRemoteAddr("192.168.1.3"); // set client IP
+                                            return request;
+                                        }))
                                 .andExpect(status()
                                         .isOk());
                     } catch (Exception e) {
@@ -120,7 +132,11 @@ public class HttpIntegrationTests {
                         mockMvc
                                 .perform(post("/api/apartment")
                                         .contentType(MediaType.APPLICATION_JSON)
-                                        .content(event1valid))
+                                        .content(event1valid)
+                                        .with(request -> {
+                                            request.setRemoteAddr("192.168.1.4"); // set client IP
+                                            return request;
+                                        }))
                                 .andExpect(status()
                                         .isOk())
                                 .andReturn();
