@@ -27,16 +27,20 @@ public class HttpIntegrationTests {
 
     @Test
     void testThatHttpVerifiesValidRecord() throws Exception {
-        String expectedResponseBody = "EventDto[id=null, title=IntroductiontoAI," +
-                        " startTime=Thu Oct 09 20:08:32 CEST 2025," +
-                        " endTime=Sat Oct 11 20:08:32 CEST 2025," +
-                        " location=null, eventStatus=SCHEDULED, description=null," +
-                        " participantList=[ParticipantDto[participantId=1, role=Observer," +
-                        " confirmationStatus=PENDING]]]";
-        String event1valid = "{\"id\":null,\"title\":\"IntroductiontoAI\",\"startTime\":1760033312987,\"endTime\":1760206112987,\"location\":null,\"eventStatus\":\"SCHEDULED\",\"description\":null,\"participantList\":[{\"participantId\":1,\"role\":\"Observer\",\"confirmationStatus\":\"PENDING\"}]}";
+        String expectedResponseBody = "ApartmentDto[id=1, name=CentralParkView, address=AddressDto[id=101, " +
+                "streetName=ElmStreet, streetNumber=42A, streetNumberSecondary=Unit5, postalCode=1000, " +
+                "cityName=Ljubljana, country=Slovenia], petsAllowed=true, numberOfRooms=4, " +
+                "yearBuilt=2015, squareMeters=120, owners=[OwnerDto[id=201, name=AnaNovak], " +
+                "OwnerDto[id=202, name=MarkoKranjc]], typeOfTransaction=PURCHASE, typeOfApartment=APARTMENT, price=250000]";
+        String event1valid = "{\"id\":1,\"name\":\"CentralParkView\",\"address\":" +
+                "{\"id\":101,\"streetName\":\"ElmStreet\",\"streetNumber\":\"42A\"," +
+                "\"streetNumberSecondary\":\"Unit5\",\"postalCode\":\"1000\",\"cityName\":\"Ljubljana\"," +
+                "\"country\":\"Slovenia\"},\"petsAllowed\":true,\"numberOfRooms\":4,\"yearBuilt\":2015," +
+                "\"squareMeters\":120,\"owners\":[{\"id\":201,\"name\":\"AnaNovak\"},{\"id\":202," +
+                "\"name\":\"MarkoKranjc\"}],\"typeOfTransaction\":\"PURCHASE\",\"typeOfApartment\":\"APARTMENT\",\"price\":250000}";
 
         mockMvc
-                .perform(post("/api/file")
+                .perform(post("/api/apartment")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(event1valid))
                 .andExpect(status()
@@ -48,13 +52,13 @@ public class HttpIntegrationTests {
 
     @Test
     void testThatHttpVerifiesInvalidRecord() throws Exception {
-        String expectedResponseEndTime = "endTime: must not be null";
-        String expectedResponseTitle = "title: must not be blank";
-        String expectedResponseStartTime ="startTime: must be a date in the present or in the future";
-        String event1invalid = "{\"id\":null,\"title\":\"\",\"startTime\":1759775574205,\"endTime\":null,\"location\":null,\"eventStatus\":null,\"description\":null,\"participantList\":[{\"participantId\":1,\"role\":\"\",\"confirmationStatus\":null}]}";
+        String expectedResponseEndTime = "name: must not be empt";
+        String expectedResponseTitle = "address: must not be null";
+        String expectedResponseStartTime ="yearBuilt: must not be null";
+        String event1invalid = "{\"id\":1,\"name\":\"\",\"petsAllowed\":true,\"numberOfRooms\":4,\"squareMeters\":120,\"owners\":[{\"id\":201,\"name\":\"AnaNovak\"},{\"id\":202,\"name\":\"MarkoKranjc\"}],\"typeOfTransaction\":\"PURCHASE\",\"typeOfApartment\":\"APARTMENT\",\"price\":250000}";
 
         mockMvc
-                .perform(post("/api/file")
+                .perform(post("/api/apartment")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(event1invalid))
                 .andExpect(status()
@@ -67,7 +71,12 @@ public class HttpIntegrationTests {
 
     @Test
     void testThatHttpReachesRateLimit() throws Exception {
-        String event1valid = "{\"id\":null,\"title\":\"IntroductiontoAI\",\"startTime\":1870037312987,\"endTime\":1970037312987,\"location\":null,\"eventStatus\":\"SCHEDULED\",\"description\":null,\"participantList\":[{\"participantId\":1,\"role\":\"Observer\",\"confirmationStatus\":\"PENDING\"}]}";
+        String event1valid = "{\"id\":1,\"name\":\"CentralParkView\",\"address\":" +
+                "{\"id\":101,\"streetName\":\"ElmStreet\",\"streetNumber\":\"42A\"," +
+                "\"streetNumberSecondary\":\"Unit5\",\"postalCode\":\"1000\",\"cityName\":\"Ljubljana\"," +
+                "\"country\":\"Slovenia\"},\"petsAllowed\":true,\"numberOfRooms\":4,\"yearBuilt\":2015," +
+                "\"squareMeters\":120,\"owners\":[{\"id\":201,\"name\":\"AnaNovak\"},{\"id\":202," +
+                "\"name\":\"MarkoKranjc\"}],\"typeOfTransaction\":\"PURCHASE\",\"typeOfApartment\":\"APARTMENT\",\"price\":250000}";
 
         int numberOfThreads = 2;
         try (ExecutorService service = Executors.newFixedThreadPool(10)) {
@@ -76,7 +85,7 @@ public class HttpIntegrationTests {
                 service.submit(() -> {
                     try {
                         mockMvc
-                                .perform(post("/api/file")
+                                .perform(post("/api/apartment")
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .content(event1valid))
                                 .andExpect(status()
@@ -93,8 +102,12 @@ public class HttpIntegrationTests {
 
     @Test
     public void testCounterWithConcurrency() {
-        String event1valid = "{\"id\":null,\"title\":\"IntroductiontoAI\",\"startTime\":1870037312987,\"endTime\":1970037312987,\"location\":null,\"eventStatus\":\"SCHEDULED\",\"description\":null,\"participantList\":[{\"participantId\":1,\"role\":\"Observer\",\"confirmationStatus\":\"PENDING\"}]}";
-
+        String event1valid = "{\"id\":1,\"name\":\"CentralParkView\",\"address\":" +
+                "{\"id\":101,\"streetName\":\"ElmStreet\",\"streetNumber\":\"42A\"," +
+                "\"streetNumberSecondary\":\"Unit5\",\"postalCode\":\"1000\",\"cityName\":\"Ljubljana\"," +
+                "\"country\":\"Slovenia\"},\"petsAllowed\":true,\"numberOfRooms\":4,\"yearBuilt\":2015," +
+                "\"squareMeters\":120,\"owners\":[{\"id\":201,\"name\":\"AnaNovak\"},{\"id\":202," +
+                "\"name\":\"MarkoKranjc\"}],\"typeOfTransaction\":\"PURCHASE\",\"typeOfApartment\":\"APARTMENT\",\"price\":250000}";
         int numberOfThreads = 10;
 
         try(ExecutorService service = Executors.newFixedThreadPool(10)) {
@@ -105,7 +118,7 @@ public class HttpIntegrationTests {
                 service.submit(() -> {
                     try {
                         mockMvc
-                                .perform(post("/api/file")
+                                .perform(post("/api/apartment")
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .content(event1valid))
                                 .andExpect(status()
