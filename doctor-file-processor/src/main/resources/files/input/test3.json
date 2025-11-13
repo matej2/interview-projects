@@ -1,14 +1,30 @@
 {
   "id": 1,
-  "department": "",
-  "patients": [
+  "name": "Central Park View",
+  "address": {
+    "id": 101,
+    "streetName": "Elm Street",
+    "streetNumber": "42A",
+    "streetNumberSecondary": "Unit 5",
+    "postalCode": "1000",
+    "cityName": "Ljubljana",
+    "country": "Slovenia"
+  },
+  "petsAllowed": true,
+  "numberOfRooms": 4,
+  "yearBuilt": 2015,
+  "squareMeters": 120,
+  "owners": [
     {
-      "id": 5,
-      "firstName": "",
-      "lastName": "test2",
-      "diseases": [
-        "test"
-      ]
+      "id": 201,
+      "name": "Ana Novak"
+    },
+    {
+      "id": 202,
+      "name": "Marko Kranjc"
     }
-  ]
+  ],
+  "typeOfTransaction": "PURCHASE",
+  "typeOfApartment": "APARTMENT",
+  "price": 250000
 }
