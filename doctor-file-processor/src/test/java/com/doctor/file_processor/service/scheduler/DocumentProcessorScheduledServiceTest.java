@@ -1,7 +1,6 @@
 package com.doctor.file_processor.service.scheduler;
 
 import com.doctor.file_processor.service.FileProcessorService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Validator;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.junit.jupiter.api.Test;
@@ -9,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.io.Resource;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
@@ -26,9 +25,7 @@ class DocumentProcessorScheduledServiceTest {
     @Mock
     private Validator validator;
     @Mock
-    private Resource resource;
-    @Mock
-    private ObjectMapper objectMapper;
+    private File resource;
     @Mock
     private ConstraintViolationImpl<Object> constraintViolation;
 
@@ -37,7 +34,7 @@ class DocumentProcessorScheduledServiceTest {
 
     @Test
     void testGetDoctorFilesForInvalidDocument() throws IOException {
-        Resource[] resourceList = {resource};
+        Set<File> resourceList = Set.of(resource);
 
         when(fileProcessorService.getResources()).thenReturn(resourceList);
         when(fileProcessorService.getResourceBody(eq(resource))).thenReturn("{\"id\":1,\"department\":\"\",\"patients\":[{\"id\":5,\"firstName\":\"\",\"lastName\":\"test2\",\"diseases\":[\"test\"]}]}");
@@ -50,7 +47,8 @@ class DocumentProcessorScheduledServiceTest {
 
     @Test
     void testGetDoctorFilesForValidDocument() throws IOException {
-        Resource[] resourceList = {resource};
+        Set<File> resourceList = Set.of(resource);
+
 
         when(fileProcessorService.getResources()).thenReturn(resourceList);
         when(fileProcessorService.getResourceBody(eq(resource))).thenReturn("{\"id\":1,\"department\":\"\",\"patients\":[{\"id\":5,\"firstName\":\"\",\"lastName\":\"test2\",\"diseases\":[\"test\"]}]}");

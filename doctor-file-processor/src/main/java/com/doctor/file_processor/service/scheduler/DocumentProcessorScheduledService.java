@@ -7,10 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
@@ -27,10 +27,10 @@ public class DocumentProcessorScheduledService extends DocumentValidator<Apartme
 
     @Scheduled(cron = "0 * * * * *")
     public void getDoctorFiles() throws IOException {
-        Resource[] doctorInputJson = fileProcessorService.getResources();
+        Set<File> doctorInputJson = fileProcessorService.getResources();
         String resourceBody;
 
-        for (Resource resource: doctorInputJson) {
+        for (File resource: doctorInputJson) {
             log.info("Processing resource: {}", resource.toString());
             resourceBody = fileProcessorService.getResourceBody(resource);
 

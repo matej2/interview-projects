@@ -1,24 +1,26 @@
 package com.doctor.file_processor.service;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class FileProcessorService {
-    private final String basePath = "src/main/resources";
-    private final Path validOutputDir = Path.of(String.format("%s/%s", basePath, "valid"));
-    private final Path invalidOutputDir = Path.of(String.format("%s/%s", basePath, "error"));
-    private final PathMatchingResourcePatternResolver resolver;
+    private static final Logger log = LoggerFactory.getLogger(FileProcessorService.class);
+    private final Path basePath = Path.of("D:", "apartment");
+    private final Path validOutputDir = Path.of(basePath.toString(), "valid");
+    private final Path invalidOutputDir = Path.of(basePath.toString(), "invalid");
+    private final Path inputDir = Path.of(basePath.toString(), "input");
 
-    public FileProcessorService(PathMatchingResourcePatternResolver resolver) throws IOException {
-        this.resolver = resolver;
+    public FileProcessorService() throws IOException {
         checkOrCreateDirectories();
     }
 
@@ -32,26 +34,37 @@ public class FileProcessorService {
         }
     }
 
-    public Resource[] getResources() throws IOException {
-        return resolver.getResources("files/input/*.json");
+    public String getResourceBody(File res) throws IOException {
+        return Files.readString(res.toPath(), StandardCharsets.UTF_8);
     }
 
-    public String getResourceBody(Resource res) throws IOException {
-        return Files.readString(res.getFile().toPath(), StandardCharsets.UTF_8);
-    }
-
-    private void processDocument(Resource document, Path targetPath) throws IOException {
-        if (document.getFilename() != null) {
-            Path docPath = validOutputDir.resolve(document.getFilename());
-            Files.move(document.getFile().toPath(), docPath, StandardCopyOption.REPLACE_EXISTING);
+    public Set<File> getResources() throws IOException {
+        try (Stream<Path> stream = Files.list(inputDir)) {
+            return stream
+                    .filter(file -> !Files.isDirectory(file))
+                    .map(p -> new File(p.toUri()))
+                    .collect(Collectors.toSet());
         }
     }
 
-    public void processValidDocument(Resource document) throws IOException {
+
+    private void processDocument(File document, Path targetPath) throws IOException {
+        if (!document.getName().isEmpty()) {
+            Path fullTargetPath = targetPath.resolve(document.getName());
+
+            try {
+                Files.move(document.toPath(), fullTargetPath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (AccessDeniedException e) {
+                log.warn(e.toString());
+            }
+        }
+    }
+
+    public void processValidDocument(File document) throws IOException {
         processDocument(document, validOutputDir);
     }
 
-    public void processInvalidDocument(Resource document) throws IOException {
+    public void processInvalidDocument(File document) throws IOException {
         processDocument(document, invalidOutputDir);
     }
 
