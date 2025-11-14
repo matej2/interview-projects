@@ -1,0 +1,30 @@
+{
+  "id":1,
+  "name":"CentralParkView",
+  "address":{
+    "id":101,
+    "streetName":"ElmStreet",
+    "streetNumber":"42A",
+    "streetNumberSecondary":"Unit5",
+    "postalCode":"1000",
+    "cityName":"Ljubljana",
+    "country":"Slovenia"
+  },
+  "petsAllowed":true,
+  "numberOfRooms":4,
+  "yearBuilt":2015,
+  "squareMeters":120,
+  "owners":[
+    {
+      "id":201,
+      "name":"AnaNovak"
+    },
+    {
+      "id":202,
+      "name":"MarkoKranjc"
+    }
+  ],
+  "typeOfTransaction":"PURCHASE",
+  "typeOfApartment":"APARTMENT",
+  "price":250000
+}

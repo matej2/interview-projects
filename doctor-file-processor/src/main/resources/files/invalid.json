@@ -1,0 +1,20 @@
+{
+  "id":1,
+  "name":"",
+  "petsAllowed":true,
+  "numberOfRooms":4,
+  "squareMeters":120,
+  "owners":[
+    {
+      "id":201,
+      "name":"AnaNovak"
+    },
+    {
+      "id":202,
+      "name":"MarkoKranjc"
+    }
+  ],
+  "typeOfTransaction":"PURCHASE",
+  "typeOfApartment":"APARTMENT",
+  "price":250000
+}
